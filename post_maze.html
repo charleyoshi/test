@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Maze Solver - Charley Tsang</title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="post.css">
+	
+</head>
+<body>
+    <div>
+        <nav>
+            <ul class="topnav">
+                <li><a href="index.html">Home</a></li>
+                <li class="topnav-right"><a 
+                    href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="post-container">
+
+        <div class="post-content-wrapper">
+            <br>
+            <a class="btn btn-sm btn-primary" href="https://github.com/CharleyTsang/maze-solver">View on Github: Maze Solver</a>
+            <br>
+    
+            <img alt="Feature Image of Post Maze" title="Single-Agent Search: How Does AI Find a Route (And Why Picking The Right Algorithm Matters)" class="featured_image" src="/images/project_maze/featureImageMaze.png">
+            <br>
+    
+            <span class="tag">AI</span>
+            <span class="tag">Search</span>
+            <span class="tag">Python</span>
+            
+            
+            <hr>
+            <h1>Single-Agent Search: How Does AI Solve a Maze</h1>
+            <h3><i>(And Why Picking The Right Algorithm Matters)</i></h3>
+    
+            <div class="author-wrapper" style="margin-top: 20px">
+                <img alt="Charley Tsang" title="Charley Tsang" id="author-thumbnail"
+                    src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Tsang</p>
+                    <small>Posted: September 26, 2021, 3:45 p.m.</small>
+                </div>
+                <a target="_blank" href="https://google.com">
+                    <img id="author-contact" src="/images/linkedin.png" />
+                </a>
+            </div>
+
+            <div class='article'>
+                <br>
+                <h2>Introduction</h2>
+                <br>
+                <p> In <a href="https://www.youtube.com/watch?v=v_JIKXl1ors&list=PLsgwB9-SGvkA43MDmseV701T3gTdA-2Il">single-agent search</a> problems, the goal is usually for an AI to come up with
+                    a sequence of actions that leads to the solution. 
+                    In other words, in order to let an AI solve a puzzle, for instance, a maze, the program has to perform
+                    a search for a path (or paths) that leads itself from the starting point all the way down to the goal.   
+                    The question is: How? And how do various aproaches differ from one another?
+                    </p>
+                
+            
+                <br>
+
+                <h3>Overview</h3>
+                <br>
+                <p>
+                    <p>Before we start, here is a simple interpretation of how the computer is solving a maze.
+                    </p>
+
+                    <img src='/images/project_maze/overview_maze.png' alt='overview maze'>
+                    <p>
+                        <ul>
+                            <li>
+                                Suppose you start at point A and want to go to point B. There is not much choice for the first step because the computer can only move one step upward (to the yellow dot). 
+                            </li>
+                            <li>
+                                Then, you can either ① go up or ② go right. 
+                            </li>
+                            <li>
+                                Suppose you choose ①, and you realized it is still not the goal. You then keep searching. 
+                            </li>
+                        </ul>
+                        
+                        Now you are at orange dot which your list of choice becomes ② and ③. It means that you can either continue with your journey to the north, or you can go back to the last choice to choose ②. That is because you haven’t explored ② yet. Maybe it’s the goal to the maze so it’s totally reasonable go back and check. 
+                        <br><br>
+                        But which way to go next? ② or ③? That's where searching algorithms kick in.
+                    </p>
+                    <br>
+                    
+                    There exists a full range of ways to perform a search. In this reading, some fundamental searching 
+                    algorithms will be introduced:
+                    <ul>
+                        <li><a href="#Depth-First Search">Depth-First Search</a></li>
+                        <li><a href="#Breadth-First Search">Breadth-First Search</a></li>
+                        <li><a href="#Greedy Best-First Search">Greedy Best-First Search</a></li>
+                        <li><a href="#A* Search">A* Search</a></li>
+                    </ul>
+                
+                    They all have unique propertities which will be dicussed in the next part.
+                </p>
+                
+
+                
+                <br><hr><br><br>
+
+                
+                <h2>Types of Search</h2>
+                <br>
+
+                <a name="Depth-First Search"></a><br>
+                <h3>1. Depth-First Search (DFS)</h3>
+                <br><br>
+                <img src='/images/project_maze/dfs_maze_1.png' alt='dfs maze 1'>
+                <p>In Depth-First Search, you must stick along with the latest decision you made 
+                    until you reach a dead end. In other words, 
+                    you do not go back until you exhaust the whole path. 
+                    Therefore, ③ is the right place to go, instead of ②. 
+                <br><br>
+                Similarly, at ③, you can either go to ④ or go back to choose to go to ②. Sticking along with the latest decision, ④ would be the reasonable place to go under Depth-First Search.
+                
+                <br><br>
+                At ④, you now have choices of checking ②, ⑤, and ⑥.
+                <br><br>
+                According to the logic that has brought us to come to ④, we should consider ⑤ or ⑥. Suppose we pick to go to ⑤ and we have ②, ⑥, and ⑦ to choose. We choose ⑦, finally coming to a dead end.
+                <br><br>
+                At this point we have exhausted the whole path, leaving ② and ⑥ the current choices. Now we take one step backward and continue sticking with the latest possible choice ⑥.
+                <br><br><br>
+                <img src='/images/project_maze/dfs_tree_explained.png' alt='dfs tree explained'>
+                <p>
+                    If we look at the moves stage by stage, 
+                    you can see that the computer will eventually find 
+                    the goal after meeting all the dead ends it can possibly meet. 
+                    Also, you will notice that the computer would never actually 
+                    choose to go to ② because it would have already found the goal 
+                    before that even happens.
+                </p>
+                <br>
+
+                <a name="Breadth-First Search"></a><br>
+                <h3>2. Breadth-First Search (BFS)</h3><br>
+                <p>The second search algorithm we are looking at is Breadth-First Search (BFS). 
+                    It is very much like Depth-First Search. The only difference is, 
+                    instead of stacking the choices and picking the latest one, 
+                    Breadth-First Search lets the choices queue and always picks the oldest one.
+                </p>
+                <br>
+                <img src='/images/project_maze/bfs_maze_1.png' alt='bfs maze 1'><br>
+                <p>
+                    Let’s take a look at how exactly BFS works.
+                    We still start from the yellow dot and can pick between going to ① or ② at time zero. Suppose we still go with ① for now. 
+                    <br><br>
+                    Then, we can choose between going to ③, or ②. Since ② is older in the queue, we pick ② this time. 
+
+                </p>
+                <br>
+                <img src='/images/project_maze/bfs_maze_2.png' alt='bfs maze 2'><br>
+                <p>
+                    And now, we can either go to ③ or ④. 
+                    Since ③ is older in our queue, we go to ③, 
+                    adding ⑤ into our queue. Then we explore ④.
+                    ④ is checked and is found to be a dead end. 
+                    We go to our only choice - ⑤ , adding ⑥ and ⑦ to the list. 
+                </p><br>
+                <img src='/images/project_maze/bfs_maze_3.png' alt='bfs maze 3'><br>
+                <p>Go to ⑥, add ⑧, then go to ⑦, and add ⑨⑩.<br><br>
+                    Then ⑪⑫ , ⑬⑭, and ⑮⑯⑰ in alternating path, 
+                    and so on, until you reach the goal.
+                </p>
+                <br><br>
+                <p>Tree representation of Breadth-Depth Search:
+                </p>
+                <img src='/images/project_maze/bfs_tree_explained.png' alt='bfs tree explained'><br>
+
+                <br><br>
+                <p>
+                    In fact, the computer can be smarter. 
+                    It can use the given information as a “hint” for where to go next. 
+                    In a problem like maze, the position of the goal can serve well as 
+                    “given information”. That’s where the third type of search 
+                    comes in – Greedy Best-First Search.
+
+                </p>
+
+
+                <a name="Greedy Best-First Search"></a><br>
+                <h3>3. Greedy Best-First Search</h3>
+                <br><br>
+                <img src='/images/project_maze/greedy_maze_1.png' alt='greedy maze 1'>
+                <p>In Greedy Best-First Search, a value of the Manhattan distance is assigned to each cell. 
+                    It tells you how far the cell is away from the goal and hence, gives you an “inkling” of where you should go next.
+                </p><br>
+                <img src='/images/project_maze/greedy_maze_2.png' alt='greedy maze 2'>
+                <p>
+                    Whenever the computer has to choose among the choice list of 
+                    where to go next, this algorithm always pick the one with 
+                    the shortest Manhattan distance. That’s why it is called 
+                    Greedy Best-First.<br><br>
+                    For instance, I am at ⑫ now and have to choose between going left and going right. This algorithm would take me to the right because it has a shorter Manhattan distance ⑪ than ⑬. 
+    
+
+
+                </p>
+                <br>
+
+                <a name="A* Search"></a><br>
+                <h3>4. A* Search</h3>
+                <br>
+                <p>Finally, the last search to be introduced is A* search. 
+                   You can think of it as an “upgraded” version of Greedy Best-First Search, 
+                    because not only does it take Manhattan Distance into account, 
+                    but it also keeps track of the cost – number of steps that 
+                    have taken you from the starting point to your current location.
+                </p><br>
+                <img src='/images/project_maze/a_star_1.png' alt='A* Search 1'>
+                <br>
+                <p>
+                    Logically you want to find a shorter path, which is another saying 
+                    of “to minimize your cost”.
+                    In the picture, the green value is the cost function of every cell.
+                     The longer it is away from the starting point A, the larger the cost. 
+                     For the longer path it costs 32 steps go to from point A to B, but it only costs 20 steps for the shorter path.
+
+                </p>
+                <br><br>
+
+                <img src='/images/project_maze/a_star_2.png' alt='A* Search 2'>
+                <br>
+                <p>
+                    Suppose you came across to the first crossroad at yellow dot. 
+                    Greedy Best-First Search would have guided you upward, 
+                    all the way down to point B, letting you finish the longer path. 
+                    That is because if we look at the Manhattan values in gray along the longer path, 
+                    not a single cell has a greater gray value than 13, 
+                    the Manhattan value of your choice of going left from the yellow dot.
+
+                    <br>
+                    <br>
+                    But in A* Search, we combine the Manhattan distance and the cost function. 
+                    The combined value in the middle of the long path (21) exceeded the value of 19, circled in red.
+                    It means that we've gone a long way, but the goal is not getting closer. 
+                    In this case we might just abandon the red path, go back to the last crossroad,
+                     go for the blue path and finally come to the goal with a shorter path.
+                </p>
+                <br><hr><br>
+                
+                <h2>Why finding which algorithm to use matters?</h2>
+                <br>
+                <p>
+                    After all the tedious explanation, 
+                    it is obvious that different types of algorithm works in different ways.
+                    The real problem is: Which one is better? Is queuing always better than stacking?
+                    Which one should we choose?
+                    <br><br>
+                    The short answer is: “It depends”. Let's take a look at some examples.
+                </p>
+                <br><br>
+                <h3>Example - Map</h3>
+                <img src='/images/project_maze/example_map.png' alt='example: map'>
+                <p>
+                    Imagine you are using google map. 
+                    There are numerous ways that can get you from point A to point B. 
+                    Neglecting traffic and other road situations, 
+                    normally you would want to search for the shortest route to 
+                    the destination. 
+                    Then which algorithm to pick should depend on which 
+                    path gives you the shortest distance to get to the destination, 
+                    so that you can arrive as soon as possible.
+
+                </p>
+                <br><br><br>
+                <h3>Example - Maze</h3>
+                <img src='/images/project_maze/example_maze.png' alt='exmaple: maze'>
+                <p>
+                    If you are playing a maze game, 
+                    there is usually only one correct path to your destination. 
+                    Then maybe you would choose an algorithm 
+                    that is the least time-consuming than the others in searching 
+                    for that one route. In this case, searching time (and memory) matters.
+                </p>
+                <br><br><br><br>
+
+                
+                
+
+                
+                
+                <br>
+                <br><hr><br>
+                <br>
+            </div>
+
+   
+    <p><i>You just finished reading: Single-Agent Search: How Does AI Find a Route
+        (And Why Picking The Right Algorithm Matters)</p>
+    <p><img alt="" src="/images/thumb0.png" style="width:1000px" /></p>
+    
+    <p>&nbsp;</p></p>
+    
+            <div class="author-wrapper" style="margin-bottom: 50px">
+                <img id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Tsang</p>
+                    <small>Posted: September 26, 2021, 3:45 p.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleytsang">
+                    <img id="author-contact" src="/images/github.png" />
+                </a>
+            </div>
+        </div>
+    
+        <div class="right-sidebar-wrapper">
+    
+            <h4 style="text-align: center;">More projects</h4>
+            <hr>
+            <div class='sidebar-inner'>
+    
+                <div class="sidebar-item">
+                    <a target="_blank"
+                        href="https://google.com">
+                        <img src="/images/baby.jpeg">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>Coming soon</strong>
+                            <p>Stay tuned.</p>
+                        </div>
+                    </a>
+                </div>
+    
+                <div class="sidebar-item">
+                    <a target="_blank" href="post.html">
+                        <img src="/images/thumb2.png">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>Wall $treet Trading
+                            </strong>
+                            
+                            <p>Stock Trading Simulator with Flask</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

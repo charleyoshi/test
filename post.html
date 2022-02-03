@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wall $treet Trading</title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="post.css">
+	
+</head>
+<body>
+    <div>
+        <nav>
+            <ul class="topnav">
+                <li><a href="index.html">Home</a></li>
+                <li class="topnav-right"><a 
+                    href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="post-container">
+
+        <div class="post-content-wrapper">
+            <br>
+            <a class="btn btn-sm btn-primary" href="https://github.com/CharleyTsang/stock-trading-simulator">View on Github</a>
+            <br>
+    
+            <img alt="A Stock Trading Simulator: Wall $treet Trading" title="A Stock Trading Simulator: Wall $treet Trading" class="featured_image" src="/images/project2/featureImage2.png">
+            <br>
+    
+            <span class="tag">Flask</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">Python</span>
+            
+            <hr>
+            <h1>A Stock Trading Simulator: Wall $treet Trading</h1>
+    
+            <div class="author-wrapper" style="margin-top: 20px">
+                <img alt="Charley Yoshi" title="Charley Yoshi" id="author-thumbnail"
+                    src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: September 17, 2021, 8:14 a.m.</small>
+                </div>
+                <a target="_blank" href="https://google.com">
+                    <img id="author-contact" src="/images/linkedin.png" />
+                </a>
+            </div>
+    
+            <br>
+            <div class='article'>
+                <br><br>
+                <h2>Overview</h2>
+                <br>
+                <p> Wall $treet Trading is a web application of stock trading simulator. 
+                    In Wall $treet Trading, you can register for a personal trading account,
+                    in which you are able to quote stock prices, buy and sell stocks, manage history transactions, and 
+                    even add extra cash value into it!
+                    </p>
+                
+            
+                <br><br>
+
+                <h3>Features</h3>
+                <br>
+                <p>
+                    Wall $treet Trading is a comprehensive demostration of Flask Web Application.
+                    As a lightweight Python web framework, Flask allows handy and flexible program development with MVC Architecture.
+                    In this project, SQLite is employeed in managing databases, serving as the backend of this Flask application. 
+                    <a href="https://github.com/CharleyTsang/stock-trading-simulator">See more on Github.</a>
+                </p>
+                
+                <br><br>
+
+                <h3>Q: Where do live stock quotes come from?</h3>
+                <br>
+                <p>
+                A: Stock quotes are downloaded via the API (application programming interface) provided by
+                <a href="https://iexcloud.io/">IEX Cloud</a>, 
+                a platform by IEX Trading that offers financial data.
+                <a href="https://iexcloud.io/docs/api/">Learn more on API document provided by IEX Cloud.</a>
+                </p>
+                
+
+                
+                
+                
+                <br><hr><br><br>
+
+                
+                <h2>1. Get Started</h2>
+                <br>
+                <h3>Register</h3>
+                <img src='/images/project2/register.png' alt='register page'>
+                To start off, you will first have to register. 
+                You can customize your own username and password as long as the username is not taken by others.
+                Even though this application is just a simulator, in order to track and save your trading activity, 
+                you must trade inside your account. Therefore, it is necessary to create your own account.
+                
+                <br><br><br><br>
+
+                <h3>Login</h3>
+                <br>
+                Once logged in, you are directed to the Home page of your account, 
+                which shows all of your portfolio holdings.
+                Since you haven't traded yet, you only have cash in your portfolio.
+                But the good news is you immediately have USD10000 cash ready to buy stocks. 
+                
+                <img src='/images/project2/initial_mark.png' alt='initial page (marked)'>
+                Note: USD10000 is a default value that you immediately <i>'own'</i> after you register. 
+                It can be easily adjusted in the backend database and has no intrinsic value in reality.
+           
+
+
+                
+                <br>
+                <br><hr><br>
+                <br>
+                <h2>2. Features</h2>
+                <br><br>
+                <h3>Quote</h3>
+                <br>
+                Enter stock code like GOOG, AAPL, AMZN. 
+
+                <img src='/images/project2/quote0.png' alt='quote page'>
+                <br><br><br>
+                Live stock price
+                <img src='/images/project2/quote1.png' alt='quote result page'>
+
+                <br><br><br><br>
+
+                <h3>Buy and Sell</h3>
+                <br>
+                <h4>Buy</h4>
+                Say you want to buy 5 share of Apple Inc.
+                <img src='/images/project2/buy.png' alt='buy page'>
+                <br><br>
+                Bought! <br>
+                Now it is appeared on your main portfolio page.
+                <img src='/images/project2/bought.png' alt='bought page'>
+                <br><br><br>
+                <h4>Sell</h4>
+                Say you want to sell 3 shares of Apple Inc.
+                <img src='/images/project2/sell.png' alt='sell page'>
+                <br><br><br><br>
+
+                <h3>Transaction History</h3>
+                Transaction History page shows the stocks you bought or sold, number of shares, at what price, and the transacted date and time,
+                so that you can easily track and monitor your trading activity.
+                <img src='/images/project2/history.png' alt='history page'>
+                <br><br><br><br>
+
+                <h3>Add Cash</h3>
+                <br>
+                One of the most important features of a stock trading simulator site is to add value to your account.
+                Here you can add unlimited amount of cash to your account. 
+                <img src='/images/project2/add_cash.png' alt='add cash page'>
+                
+                <br>
+                <br><hr><br>
+                <br>
+            </div>
+
+   
+    
+    <p><img alt="" src="/images/thumb2.png" style="width:1000px" /></p>
+    
+    <p>&nbsp;</p></p>
+    
+            <div class="author-wrapper" style="margin-bottom: 50px">
+                <img id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: September 17, 2021, 8:14 a.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleytsang">
+                    <img id="author-contact" src="/images/github.png" />
+                </a>
+            </div>
+        </div>
+    
+        <div class="right-sidebar-wrapper">
+    
+            <h4 style="text-align: center;">More projects</h4>
+            <hr>
+            <div class='sidebar-inner'>
+    
+                <div class="sidebar-item">
+                    <a target="_blank"
+                        href="https://google.com">
+                        <img src="/images/baby.jpeg">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>Coming soon</strong>
+                            <p>Stay tuned.</p>
+                        </div>
+                    </a>
+                </div>
+    
+                <div class="sidebar-item">
+                    <a target="_blank" href="https://google.com">
+                        <img src="/images/thumb0.png">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>Single-Agent Search</strong>
+                            
+                            <p>How does AI solve a maze?</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
