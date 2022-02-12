@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nerdle</title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/post.css">
+	
+</head>
+<body>
+    <div>
+        <nav>
+            <ul class="topnav">
+                <li><a href="/index.html">Home</a></li>
+                <li class="topnav-right"><a 
+                    href="/index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="post-container">
+
+        <div class="post-content-wrapper">
+            <br>
+            <a target="_blank" class="btn btn-sm btn-primary" href="https://github.com/charleyoshi/nerdle">View on Github</a>
+            <br>
+    
+            <img alt="How to make a database for Nerdle" title="How to make a database for Nerdle" class="featured_image" src="/images/thumb_nerdle.png">
+            <br>
+    
+        
+            <span class="tag">Python</span>
+            <span class="tag">Beginner</span>
+            
+            <hr>
+            <h1>Generate math equations to play NERDLE</h1>
+    
+            <div class="author-wrapper" style="margin-top: 20px">
+                <img alt="Charley Yoshi" title="Charley Yoshi" id="author-thumbnail"
+                    src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: February 10, 2022, 2:08 p.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleyoshi">
+                    <img id="author-contact" src="/images/linkedin.png" />
+                </a>
+            </div>
+    
+            <br>
+            <div class='article'>
+                <br>
+                Original Game: <a target="_blank" href="https://nerdlegame.com">Nerdle</a>
+                <br><br>
+                <h2>Overview</h2>
+                <br>
+                <p> NERDLE is a math version of the viral word game <a target="_blank" href="https://www.powerlanguage.co.uk">WORDLE</a>.
+                    I was trying to build myself a Nerdle program to play just for fun, but then I realized there was no dataset available to download online.
+                    Therefore, I decided to write a simple Python program for creating a list of mathematical equations that can be utilised in the game. 
+                    It turned out to be more fun than I had expected.
+                    So in this post, I am going to walk through the principle logics and the technical steps of building a program to generate a math equation database for the Nerdle game.
+                    
+
+                    </p>
+                
+            
+            <br><hr><br>
+
+                <h2>Background</h2>
+                <br>
+                <img src='/images/post_nerdle/4.png' alt='Background section: Image from The Nerdle Game'>
+                <small><small><i>Image from The Nerdle Game</i></small></small>
+                
+                <br><br>
+                
+                <h3>1. The 8 Spaces </h3>
+                <p>
+                    In the original Nerdle game, every time you make a guess you have to fill up all the 8 spaces in the line. 
+                    So you can imagine your equation dataset consist of strings with fixed length of 8. 
+                    For example, the string <i style="color:limegreen">10 + 20 = 30</i> is 8-character long so it’s valid. 
+                    The string <i style="color:firebrick">5 + 25 * 2 = 55</i> is NOT valid because it has 9 characters. 
+                </p>
+                
+                <br>
+                <br>
+
+                <h3>2. A Valid Equation</h3>
+                <p>
+                    The major part of this program is to define what is a valid equation.
+                    An equation is consist of 3 parts: the left-hand side (<span style="color: dodgerblue;">LHS</span>), the equal sign ( <span style="color: dodgerblue;">=</span> ), and the right-hand side (<span style="color: dodgerblue;">RHS</span>). 
+                    In this program some constraints have to be put into especially on the LHS and RHS. 
+                    <br><br>
+                    For example, the <mark style="background-color: lightcyan;">first digits in LHS and RHS</mark> cannot be 0, because math problems like <i style="color:firebrick"> 03 + 4 = 7 </i> does not make sense to the game players.
+                    
+                    Also, <mark style="background-color: lightcyan;">two operators should not appear consecutively</mark> like <i style="color:firebrick">7 +* 2 </i> or  <i style="color:firebrick">4 - 6 = -2 </i>for the sake of simplicity for both the programmer and users. 
+                    There are a few more constraints which will be discussed in a later part: <a href="nerdle.html#generate_a_lhs"> Step 1 - Generate a LHS</a>
+                    
+                    
+                </p>
+                
+
+                
+                
+                
+                <br><hr><br><br>
+
+                
+                <h2>Get Started</h2>
+                <br>
+                
+                
+                Once you understand the background information of generating a list of valid 8-character equations, you can start working on the logic. 
+                The macroscopic logic is as simple as followed:
+
+
+
+                
+                <br><br>
+                <ol>
+                    <li>
+                        Make the LHS of the equation by randomly generating some numbers and operators (+-*/)  , with constraints.
+                        <a href="nerdle.html#generate_a_lhs">See Step 1 - Generate a LHS</a>
+                    </li>
+                        <br>
+                    <li>
+                        Try to compute the answer, which will be the RHS of the equation. <a href="nerdle.html#calculate">See Step 2 - Calculate</a>
+                    </li>
+                    <br>
+                    <small><small><i style="color: lightgray;">If you have passed the first two steps, you already have a valid mathematical equation, like <i style="color: lightpink;">2 / 60 + 3 = 3.03</i> , or <i style="color: lightpink;">128 - 52 = 76</i>.
+                        (But NEITHER of these 2 equations can be used as Nerdle database, because the first one involves non-integer, and the second one takes up 9 spaces instead of 8.)</i></small></small>
+                
+                    <br><br>
+                    <small><small><i style="color: lightgray;">When a <span style="color: skyblue;">LHS</span> gives a <span style="color: skyblue;">RHS</span> (like <span style="color: skyblue;">2 / 60 + 3</span> gives <span style="color: skyblue;">3.03</span>), <span style="color: skyblue;">LHS</span>  and <span style="color: skyblue;">RHS</span>  with the equal sign ( <span style="color: skyblue;">=</span> ) become the <span style="color: darkolivegreen;"><mark style="background-color: lightcyan;">full equation</mark></span></span> .</i></small></small>
+                    <li>Check if the <mark style="background-color: lightcyan;">full equation</mark> meets some specific conditions.  <a href="nerdle.html#conditions">See Step 3 - Conditions</a>.
+                        If it does, it’s a successful generation for the game!
+                        If it doesn’t, just forget it and start over from step 1 again.</li> 
+                        
+                    <br>
+                        <li>Repeat step 1 to 4 enough times and you will eventually have a list of playable equations. 
+                        From my experience I loop 1000 times and often get 80 - 100 playable equations (Around 10%).</li>
+                </ol>
+                
+           
+
+
+                
+                <br>
+                <br><hr><br>
+
+                <h2>Implementation</h2>
+                <br><br>
+                <h3><a name="generate_a_lhs"></a>Step 1: Generate a LHS</h3>
+
+                
+                <code style="color: blue">def generateEquations(equalSignPosition):</code>
+                <br> 
+                <p style="margin-left: 2em;">
+                <small><code style="color: gray">
+                    ''' <br>Generate a list from digits and operators (+-*/) <br>
+                Example: <br> [‘5’, ‘1’, ‘/’, ‘7’, ‘9’] or <br> [‘2’, ‘1’, ‘1’, ‘*’, ‘3’] or <br> [‘1’, ‘6’, ‘+’, ‘1’, ‘-’, ‘9’]<br>
+                '''
+                </code> </small>
+                </p>
+                    
+                    <small><small><i style="color: lightgray;">Q: How to control the length of list to 5 or 6?
+                    <br><br>
+                    A: It actually depends on the <mark style="background-color: lightcyan;">position of the equal sign (<span style="color: blue;">equalSignPosition</span>)</mark>, which generally can be <span style="color: blue;">5</span> or <span style="color: blue;">6</span> or <span style="color: blue;">7</span>. 
+                    Since the <span style="color: blue;">TOTALSPACE</span> is 8,  <mark style="background-color: lightcyan;"><span style="color: blue;">equalSignPosition</span> being in the <span style="color: blue;">7th</span></mark> space would expect the answer to be a <mark style="background-color: lightcyan;">single digit number, like 3</mark>. 
+                    Similarly,  it being in the 6th space would expect the answer to be a double digit number, like 24, and so on.
+                    <br>
+                    In this project I let the computer to pick randomly among [5, 6, 7] for each equation in order to obtain a more dynamic set of data.
+                    </i></small></small>
+                    
+                    <img src='/images/post_nerdle/14.png' alt='Position of the equal sign'>
+  
+                <br><br><br>
+                <u><h4>Increase the chance of getting a reasonable LHS by adding constraints</h4></u>
+                <p>
+                    While randomly picking numbers and operators in hopes for getting a reasonable LHS may seem <mark style="background-color: lightcyan;">inefficient</mark> as you can imagine things like <i style="color:firebrick">8827 - %</i> or <i style="color:firebrick"> 93 - 2 + %</i> will often show up, certain constraints can be applied to prevent these from happening:
+                </p>
+                <ol style="color: orange;">
+                    <li>
+                        Don’t start the equation with 0 or operators(+-*/)
+                    </li>
+                    <li>
+                        Don’t end with operators (+-*/)
+                    </li>
+                    <li>
+                        If the previous space is an operator, don’t continue with 0 or operators (+-*/)
+                    </li>
+                </ol>
+                <h5>Code</h5>
+                <img src='/images/post_nerdle/13.png' alt='code snippet for generateEquations function'>
+                
+                <br><br>
+                <p> With these constraints helping you would easily generate a reasonable LHS like <i style="color:limegreen">7 + 813</i>, <i style="color:limegreen">3 * 7 - 8</i>, etc.</p>
+                <br>
+                <p>The last minor step is to convert the list into String to save effort for the next part.
+                    <br><small><code style="color: gray">
+                        Example: [‘7’, ‘+’, ‘8’, ‘1’, ‘3’] => ‘7+813’
+                    </code></small>
+                    <br>It can be done as simple as below:
+                    </p>
+                    <img src='/images/post_nerdle/7.png' alt='code snippet for convertListToString function'>
+                <br><br><br><br>
+                
+
+                <!-- --------------------------------------------------------------------------------------------------- -->
+
+                <h3><a name="calculate"></a>Step 2: Calculate</h3>
+
+                
+                <code style="color: blue">def Calculate(LHS):</code>
+                <br> 
+                <p style="margin-left: 2em;">
+                <small><code style="color: gray">
+                    ''' <br>Take LHS as a string input, then use try and except to calculate the float of RHS <br><br>
+                Example Input: ‘2/17+9’<br>
+                Example Output:  9.1176470588
+                <br><br>
+                Example Input: ‘64-19’<br>
+                Example Output: 45.0
+                <br><br>
+                Example Input: ‘97/0’<br>
+                Example Output: None
+                <br><br>
+                Example Input: ‘14594’<br>
+                Example Output: None
+                <br><br>
+                Example Input: ‘1/89/9’<br>
+                Example Output: 0.001248
+                <br><br>
+                Example Input: ‘2-49’<br>
+                Example Output: -47.0
+                <br><br>
+                Example Input: ‘3-14+3’<br>
+                Example Output: 14.0
+                <br>'''
+                </code> </small></p>
+                
+                <br>
+                <p>
+                    This part is very much like a typical calculator program, where input is a string of LHS, and output is a float number.
+                    
+                    Above are some possible inputs and their corresponding answer outputs. 
+                    The goal of this part is to try to calculate the given LHS and provide a mathematical valid answer (RHS). 
+                    <br><br>
+                    For example, if the input is (the string form of)  <i style="color:limegreen">64 - 19</i>, the function should return an answer of float <i style="color:limegreen">45.0</i>. 
+                    And <i style="color:limegreen">2 / 17 + 9</i> should give  <i style="color:limegreen">9.1176470588</i>. 
+                    If the input is incalculable like <i style="color:firebrick">97 / 0</i> or <i style="color:firebrick">14594</i>, the function would also catch it and return <code style="color: dodgerblue;"><strong>None</strong></code>.
+
+                </p>
+               
+                
+                
+                <h4>Steps</h4>
+                <ol>
+                    <li>
+                        Separate (by regular expression, <a target="_blank" href="https://docs.python.org/3/library/re.html">regex</a>) the numbers and operators into a list
+                        <br>
+                        <code style="color: gray;">
+                            Example:
+                            '2/ 1 7 + 9' => ['2', '/', '17', '+', '9']
+                            <br>
+                            Example: '97 / 0' => ['97', '/', '0']
+                        </code>
+                    </li>
+                    <br>
+                    <li>
+                        If the <mark style="background-color: lightcyan;">number of items in the list</mark> is less than or equal to 2, return <code style="color: dodgerblue;"><strong>None</strong></code> and this part has ended, since it is certain that it is not calculable.
+                        <br>
+                        <code style="color: gray;">
+                            Example:
+                            
+                            ['14594'] => return <span style="color: dodgerblue"><strong>None</strong></span>
+                            <br>
+
+                            Example: [ '17', '+' ] => return <span style="color: dodgerblue"><strong>None</strong></span>
+                        </code>
+                        
+                    </li>
+
+                    <br>
+                    <li>
+                        For the remaining case, keep looping in the list like below to  <mark style="background-color: lightcyan;">modify the list until there is only 1 item</mark>, specifically a float.
+                        <br>
+                        <code style="color: gray;">Example:
+                            <br>
+                            ['2', '/', '17', '+', '9']
+                            <br>
+                            => [0.117647, '+', '9']
+                            <br>
+                            => [9.117647]
+
+                        </code>
+                        <ol>
+                            <li>
+                                Find all the <span style="color: dodgerblue;">*</span> and <span style="color: dodgerblue;">/</span> in the list. 
+                                <br>
+                                If it is a <span style="color: dodgerblue;">*</span> <span style="color: lightgray;">(or /)</span> , multiply <span style="color: lightgray;">(or divide if it’s / )</span>the number before the <span style="color: dodgerblue;">*</span> with the number after the <span style="color: dodgerblue;">*</span>. 
+                                <br>
+                                Remove those 3 items (which is the number before the <span style="color: dodgerblue;">*</span>, the <span style="color: dodgerblue;">*</span>, and the number after the <span style="color: dodgerblue;">*</span>) from the list, and insert the newly obtained float product <span style="color: lightgray;">(or quotient)</span> into the position where the 3 belong. 
+                                <br>
+                                Repeat until there’s no more <span style="color: dodgerblue;">*</span> or <span style="color: dodgerblue;">/</span> in the list.
+	                            <br>
+                                <span style="color: lightgray;">
+                                <code style="color: lightgray;">Example: ['2', '/', '17', '+', '9']</code>
+                                
+                                <br>
+
+                                There’s a / in the second position, so calculate 2/ 17 = 0.117647, remove 2, / and 17 from the list, insert 0.117647 in the same position and the list becomes [0.117647, '+', '9']
+                            </span>
+                            </li>
+                            <li>
+                                Handle + and - after getting rid all * and /. Do the same thing as above, but just replace * and / with + and -.
+                            </li>
+                            <li>
+                                Eventually the list is left with one float number, which is going to be the returned answer, a.k.a the RHS! 
+                            </li>
+                        </ol>
+                    </li>
+                    <br>
+                    <small><small><i style="color: lightgray;">
+                        Note: <u>Handling ZeroDivisionError:</u>
+                        <br>
+                        Technically, we don’t have to handle this case because the <code style="color: skyblue">function generateEquations </code>in step 1 has guaranteed that there won’t be any number 0s right after any operators, therefore any cases of numbers divided by zero will not happen. 
+                        However, since this calculate function can be helpfully reused when handling input of game users, I still added a try and except in the division part in case the user types something like 5/0.
+                    </i></small></small>
+                </ol>
+                
+                
+                <br><br><br>
+
+                <h3><a name="conditions"></a>Step 3: Conditions</h3>
+                <br>
+                <p>
+                    The final step is relatively simple. Just check if the equation meets all the requirements of being in the database. 
+                    If it does, include it in a list!
+                     (If it doesn’t, just don’t do anything and start over from step 1 to generate a new LHS.)
+                </p>
+                <br>
+                <h4>Requirements that must be met:</h4>
+                <ol>
+                    <li>
+                        The RHS from step 2 is not None
+                        <p style="margin-left: 2em;">
+                            <code style="color: gray">
+                                <span style="color: blue">isEquationValid</span> = <span style="color: blue">rightHandSide</span> is not <span style="color: dodgerblue"><strong>None</strong></span>
+                            </code>
+                        </p>
+                    </li>
+                    <br>
+                    <li>
+                        The RHS from step 2 is an integer, to prevent answers with decimal places
+                        <p style="margin-left: 2em;">
+                            <code style="color: gray">
+                                <span style="color: blue">isInteger</span> = <span style="color: blue">rightHandSide</span> == int(<span style="color: blue">rightHandSide</span> or 0)
+                            </code>
+                        </p>
+                    </li>
+                    <br>
+                    <li>
+                        The RHS is not a negative number or not 0, to prevent negative numbers and extremely small float eg. 0.000052 
+                        <p style="margin-left: 2em;">
+                            <code style="color: gray">
+                                <span style="color: blue">isNotSmallNum</span> = <span style="color: blue">rightHandSide</span> >= 1
+                            </code>
+                            <br>
+                            <small><small><i style="color: lightgray;">
+                                Note:
+                                <br>
+                                How Python handles small numbers is out of scope of this project, so we just assume we won't have equations = 0 for the sake of simplicity
+                            </i></small></small>
+                        </p>
+                    </li>
+                    <br>
+                </li>
+                <br>
+                <li>
+                    All 3 of the LHS, the equal sign and the RHS take up 8 spaces in total
+                    <p style="margin-left: 2em;">
+                        <code style="color: gray">
+                            <span style="color: blue">isSpaceValid</span> = len(str(int(<span style="color: blue">rightHandSide</span> or 0))) == <span style="color: blue">TOTALSPACE</span> -  <span style="color: blue">equalSignPosition</span>
+                        </code>
+                    </p>
+                </li>
+                </ol>
+                <br>
+                <p>
+                    If all the conditions are met, the full equation can be appended to the list and can be written into a database file!
+
+                </p>
+                
+
+                
+                
+                <br>
+                <br><hr><br>
+                <br>
+            </div>
+
+   
+    <p><i>You've just finished reading: Generate math equations to play NERDLE</i></p>
+    <p><img alt="" src="/images/thumb_nerdle.png" style="width:1000px" /></p>
+    
+    <p>&nbsp;</p>
+    
+            <div class="author-wrapper" style="margin-bottom: 50px">
+                <img id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: February 10, 2022, 2:08 p.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleyoshi">
+                    <img id="author-contact" src="/images/github.png" />
+                </a>
+            </div>
+        </div>
+    
+        <div class="right-sidebar-wrapper">
+    
+            <h4 style="text-align: center;">More projects</h4>
+            <hr>
+            <div class='sidebar-inner'>
+    
+                <div class="sidebar-item">
+                    <a target="_blank"
+                        href="/post/wordle.html">
+                        <img src="/images/thumb_wordle.png">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>How to Build the WORDLE Game</strong>
+                            <p>Learn to build the viral word game in just 10 minutes!</p>
+                        </div>
+                    </a>
+                </div>
+    
+                <div class="sidebar-item">
+                    <a target="_blank" href="/post_maze.html">
+                        <img src="/images/thumb0.png">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>Single-Agent Search</strong>
+                            
+                            <p>How does AI solve a maze?</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

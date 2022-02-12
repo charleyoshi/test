@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wordle</title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/post.css">
+	
+</head>
+<body>
+    <div>
+        <nav>
+            <ul class="topnav">
+                <li><a href="/index.html">Home</a></li>
+                <li class="topnav-right"><a 
+                    href="/index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="post-container">
+
+        <div class="post-content-wrapper">
+            <br>
+            <a target="_blank" class="btn btn-sm btn-primary" href="https://github.com/charleyoshi/wordle">View on Github</a> 
+            <br>
+    
+            <img alt="How to build the wordle game" title="How to build the wordle game" class="featured_image" src="/images/thumb_wordle.png">
+            <br>
+    
+        
+            <span class="tag">Python</span>
+            <span class="tag">Beginner</span>
+            
+            <hr>
+            <h1>How to Build the Viral Word Game WORDLE</h1>
+    
+            <div class="author-wrapper" style="margin-top: 20px">
+                <img alt="Charley Yoshi" title="Charley Yoshi" id="author-thumbnail"
+                    src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: February 12, 2022, 8:04 a.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleyoshi">
+                    <img id="author-contact" src="/images/linkedin.png" />
+                </a>
+            </div>
+    
+            <br>
+            <div class='article'>
+                <br>
+                Original Game: <a target="_blank" href="https://www.powerlanguage.co.uk/wordle/">Wordle - A daily word game</a>
+                <br><br>
+                <h2>Introduction</h2>
+                <br>
+                <p> 
+                    In this tutorial I am going to walk through how to build a simple Wordle game in your terminal using Python. 
+                    The final product will look like this:
+                    
+                    </p>
+                
+                <img src='/images/post_wordle/0.png' alt='Wordle in terminal example'>
+                <small><small><i>Image from the terminal</i></small></small>
+            <br><br><br><hr><br>
+            <h2>Implementation</h2><br>
+            <br>
+                
+            <!------------------------------------Visualization-------------------------------------->
+            <h3><a name="visualization"></a>1. Visualization</h3>
+                
+               <h4><a href="https://github.com/Textualize/rich"> Rich (https://github.com/Textualize/rich)</a></h4>
+                   <br>
+                    <p>
+                    Since the terminal is not so friendly for visualization, I imported <i>Rich</i>, a Python library for rich text and beautiful formatting in the terminal. 
+                    Installation guide can be found in the above link.
+                    <br>
+                    <br>
+                    For this project only the <u>print function</u> from <i>Rich</i> is needed. 
+                    It can print reverse text with <u>customed background colours</u>.    
+                </p>
+                <br>
+                <p><span style="color: gray;">Syntax:</span></p>
+                <p style="margin-left: 2em;">
+                    
+                    <code style="color: gray">
+                        from <span style="color:lightseagreen"><b>rich</b></span> import <span style="color:lightseagreen"><b>print</b></span> <br>
+                        <br>
+                        #Print inverted gray <span style="background-color:dimgray"><span style="color:white">&nbsp;A&nbsp;</span></span>:
+                        <br>
+                        &emsp;&emsp;&emsp;&emsp;print('[reverse gray] A [reverse gray]') <br>
+                        <br>
+                        #Print inverted yellow <span style="background-color:gold"><span style="color:black">&nbsp;B&nbsp;</span></span>:
+                        <br>
+                        &emsp;&emsp;&emsp;&emsp;print('[reverse yellow] B [reverse yellow]') <br>
+                        <br>
+                        #Print inverted green <span style="background-color:seagreen"><span style="color:black">&nbsp;C&nbsp;</span></span>:
+                        <br>
+                        &emsp;&emsp;&emsp;&emsp;print('[reverse green] c [reverse green]') <br>
+
+                    </code>
+                </p>
+                
+                <br><br>
+
+                <!------------------------------------Get an answer-------------------------------------->
+                
+                <h3><a name="get_an_answer"></a>2. Get an answer from a word list </h3>
+                <p>
+                    This first thing to do is to get an answer from a list of 5-letter words. 
+                    It’s easy to download a 5-letter-word list online. <a href="https://www-cs-faculty.stanford.edu/~knuth/sgb-words.txt">Here’s an example</a>.
+                    You can also copy all and paste it into a new .txt file.
+                </p>
+                <p>
+                    Next, you should <code style="color: lightseagreen;"><strong>read</strong></code> the .txt file and store the words into a Python list, then pick one word from <code style="color: lightseagreen;"><strong>random</strong></code> to be your answer.
+                </p>
+                
+                <b>Code</b>
+                <img src='/images/post_wordle/5.png' alt='code for load file function'>
+                <p>
+                    <small><code style="color: gray">
+                        
+                        
+                        <span style="color:lightseagreen"><b>try</b></span>:
+                        <br>
+                        &emsp;&emsp;loadFile()
+                        <br>
+                        <span style="color:lightseagreen"><b>except</b></span>:
+                        <br>
+                        &emsp;&emsp;print('OOOPS! No such file called \'{0}\' in your directory!'.format(db))
+                        <br>
+                        &emsp;&emsp;sys.exit()
+                    </code></small>
+                    
+                </p>
+
+                    
+                <br>
+                <br>
+                <!--------------------------------------Play------------------------------------>
+
+
+                <h3><a name="play"></a>3. Play</h3>
+                <p>
+                    After getting an answer, you can start playing.
+                    <br><br>
+
+                    In the Beginning you would like to initiate a variable <code style="color: blue;"><strong>maxAttempt</strong></code> to be a fixed integer, e.g. 5.
+                    Then the game is going to loop for maximum 5 times. The only two ways to break the loop is either <span style="color: orange">(1)</span> the user get the correct answer or <span style="color: orange">(2)</span> the user has used up all 5 chances.
+                    <br><br>
+                    Initially you should initiate the following variables:
+
+                    <br>
+                    <code style="color: gray">
+                    
+                    <code style="color: blue;"><strong>isWin</strong></code> = False
+                        <br>
+                        <code style="color: blue;"><strong>currentAttempt</strong></code> = 0
+                        <br>
+                        <code style="color: blue;"><strong>maxAttempt</strong></code> = 5
+                        <br>
+                        <code style="color: blue;"><strong>welcomeMessage</strong></code> = '_ _ _ _ _ Let\'s play Wordle!'
+                        
+                    </code>
+                </p>
+                <br>
+                <p>
+                    <b>Pseudocode</b>
+                        <code style="color: gray">
+                            <br>
+                            while <code style="color: blue;"><strong>currentAttempt</strong></code> is less than <code style="color: blue;"><strong>maxAttempt</strong></code>:
+                            <br>
+                            &emsp;&emsp;if (it is the first attempt):
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;print the <code style="color: blue;"><strong>welcomeMessage</strong></code>
+                            <br>
+                            &emsp;&emsp;else:
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;print how many attempts left
+                            <br>
+                            <br>
+                            &emsp;&emsp;<span style="color: black;"><strong># Handle user input</strong></span> 
+                            <br>
+                            &emsp;&emsp;<code style="color: blue;"><strong>isValid</strong></code> = False (set the user input to not valid)
+                            <br>
+                            &emsp;&emsp;while (the <code style="color: blue;"><strong>input</strong></code> is NOT valid):
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;keep asking user for <code style="color: blue;"><strong>input</strong></code>
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;check if the <code style="color: blue;"><strong>input</strong></code> is valid, if yes change <code style="color: blue;"><strong>isValid</strong></code> to True
+                            <br>
+                            <br>
+                            &emsp;&emsp;<span style="color: black;"><strong># Display coloured hint</strong></span> 
+                            <br>
+                            
+                            &emsp;&emsp;for every <code style="color: darkturquoise;"><strong>letter</strong></code> in the user <code style="color: blue;"><strong>input</strong></code>:
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;if (the <code style="color: darkturquoise;"><strong>letter</strong></code> is in the right place):
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;print the <code style="color: darkturquoise;"><strong>letter</strong></code> inverted green
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;elif (the <code style="color: darkturquoise;"><strong>letter</strong></code> exists somewhere in the <code style="color: blue;"><strong>answer</strong></code>):
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;print the <code style="color: darkturquoise;"><strong>letter</strong></code> inverted yellow
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;else:
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;print the <code style="color: darkturquoise;"><strong>letter</strong></code> inverted gray
+                            <br>
+                            <br>
+                            &emsp;&emsp;<span style="color: black;"><strong># Check if has won</strong></span> 
+                            <br>
+                            &emsp;&emsp;if the user <code style="color: blue;"><strong>input</strong></code> is exactly the same with the <code style="color: blue;"><strong>answer</strong></code>:
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;turn <code style="color: blue;"><strong>isWin</strong></code> to True
+                            <br>
+                            &emsp;&emsp;&emsp;&emsp;break the while loop
+                            <br>
+                            <br>
+                            &emsp;&emsp;<code style="color: blue;"><strong>currentAttempt</strong></code>  += 1
+                            <br>
+                        </code>
+                        <br>
+                        <small><small><i style="color: lightgray;">
+                            Note: <u>Uppercase-Lowercase Handling</u>
+                            <br>
+                            Uppercase and lowercase letters are different characters in Computer Science. When your <code style="color: skyblue">answer</code> is <code style="color: pink"><i>'HELLO'</i></code> but the user <code style="color: skyblue">input</code> is <code style="color: pink"><i>'hello'</i></code>, the computer won't consider it correct. 
+                            Therefore, it is better to convert all strings to uppercase for easier comparsion.
+                            You can use <code style="color: dodgerblue">.upper()</code> function.
+                        </i></small></small>
+
+                </p>
+                <br>
+                <!----------------------user input----------------------->
+                <h4><u>Handle user input</u></h4>
+                <p>
+                    First, convert the input to uppercase. <br>
+                    Second, check if the input meets the following requirements: <br>
+                    <ol>
+                        <li>the input has and only has precisely 5 characters</li>
+                        <li>all characters are alphabets</li>
+                        <li>the case-converted input is an existing word (it can be checked by seeing if the word exists in your word list)</li>
+                    </ol>
+                    <b>Code</b>
+                    <img src='/images/post_wordle/8.png' alt='handle user input code'>
+                </p>
+                
+                <!------------------------display---------------------------->
+                <br>
+                <br>
+                <h4><u>Display coloured hint</u></h4>
+                <p>As mentioned in previous part (<a href="wordle.html#visualization">Visualization</a>) we will use a Python library called <i>Rich</i> to display the hints in three colours.
+
+                    <br>
+                    <br>
+                    To be precise, we will loop through, every time, the valid input from user to check letter by letter.
+                    For example, suppose the <code style="color: blue;"><strong>answer</strong></code> is <i>'MAPLE'</i> and the user <code style="color: blue;"><strong>input</strong></code> is <i>'FLAME'</i>. 
+                    You loop through <i>'FLAME'</i> to get the hint colour.
+                    <ul>
+                        <li>
+                            F: not in <i>'MAPLE'</i> &rarr; <span style="background-color:dimgray"><span style="color:white">&nbsp; F &nbsp;</span></span>
+                        </li>
+                        <li>
+                            L: in <i>'MAPLE'</i> but not in right position &rarr; <span style="background-color:gold"><span style="color:black">&nbsp; L &nbsp;</span></span>
+                        </li>
+                        <li>
+                            A: in <i>'MAPLE'</i> but not in right position &rarr; <span style="background-color:gold"><span style="color:black">&nbsp; A &nbsp;</span></span>
+                        </li>
+
+                        <li>
+                            M: in <i>'MAPLE'</i> but not in right position &rarr; <span style="background-color:gold"><span style="color:black">&nbsp M &nbsp;</span></span>
+                        </li>
+                        <li>
+                            E: in the right place &rarr; <span style="background-color:seagreen"><span style="color:black">&nbsp; E &nbsp;</span></span>
+                        </li>
+                    </ul>
+                    You should display: <span style="background-color:dimgray"><span style="color:white">&nbsp; F &nbsp;</span></span> <span style="background-color:gold"><span style="color:black">&nbsp; L &nbsp;</span></span> <span style="background-color:gold"><span style="color:black">&nbsp; A &nbsp;</span></span> <span style="background-color:gold"><span style="color:black">&nbsp; M &nbsp;</span></span> <span style="background-color:seagreen"><span style="color:black">&nbsp; E &nbsp;</span></span>
+                    
+                    <br><br>
+                    <b>Code</b>
+                    <img src='/images/post_wordle/7.png' alt='display hint colors code'>
+                </p>
+
+                
+                <!------------------------check---------------------------->
+                <br>
+                <br>
+                <h4><u>Check if has Won</u></h4>
+                <p>
+                    <b>Code</b>
+                    <img src='/images/post_wordle/9.png' alt='check if has won code'>
+                    <br><br>
+                    The last past is relatively simple. Just check if the user has got the answer completely correct.
+                    (Also, all 5 letters would be shown green to the user.) 
+                    If they do, turn <code style="color: blue;"><strong>isWin</strong></code> to True and break the while loop.
+                    <br><br>
+                    <code style="color: blue;"><strong>isWin</strong></code> has no use in the <code style="color: lightseagreen;"><strong>play</strong></code> function, but it can be used and changed outside the function because I set it to be a <mark style="background-color: lightcyan;"><u>global variable</u></mark>.
+
+                </p>
+                
+                <br><hr><br><br>
+
+                
+                
+                <br>
+                
+
+
+                
+                <br><br>
+                
+            
+
+                
+                <br>
+                <br><hr><br>
+
+                
+                <br><br>
+                
+                
+                    
+                    
+             
+                
+                
+
+                <!-- --------------------------------------------------------------------------------------------------- -->
+
+                
+                
+               
+
+                
+                
+                <br>
+                <br><hr><br>
+                <br>
+            </div>
+
+   
+    <p><i>You've just finished reading: How to Build the Viral Word Game WORDLE</i></p>
+    <p><img alt="" src="/images/thumb_wordle.png" style="width:1000px" /></p>
+    
+    <p>&nbsp;</p>
+    
+            <div class="author-wrapper" style="margin-bottom: 50px">
+                <img id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: February 12, 2022, 8:04 p.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleyoshi">
+                    <img id="author-contact" src="/images/github.png" />
+                </a>
+            </div>
+        </div>
+    
+        <div class="right-sidebar-wrapper">
+    
+            <h4 style="text-align: center;">More projects</h4>
+            <hr>
+            <div class='sidebar-inner'>
+    
+                <div class="sidebar-item">
+                    <a target="_blank"
+                        href="https://google.com">
+                        <img src="/images/baby.jpeg">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>Coming Soon</strong>
+                            <p>Stay tuned.</p>
+                        </div>
+                    </a>
+                </div>
+    
+                <div class="sidebar-item">
+                    <a target="_blank" href="/post_maze.html">
+                        <img src="/images/thumb0.png">
+    
+    
+                        <div class="sidebar-item-body">
+                            <strong>Single-Agent Search</strong>
+                            
+                            <p>How does AI solve a maze?</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
