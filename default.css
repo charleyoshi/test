@@ -463,8 +463,14 @@ h6 {
 	color: #fff;
 	background-color: var(--buttonColor);
 	border: none;
+	cursor: pointer;
 }
 
+#formMessage {
+	font-size: x-small;
+	text-align: center;
+	padding: 6px 0;
+}
 
 @media screen and (max-width: 1200px) {
 	.main-container {
