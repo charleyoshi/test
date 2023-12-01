@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>cato</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/post.css">
+
+</head>
+
+<body>
+    <div>
+        <nav>
+            <ul class="topnav">
+                <li><a href="/index.html">Home</a></li>
+                <li class="topnav-right"><a href="/index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="post-container">
+
+        <div class="post-content-wrapper">
+            <br>
+            <a target="_blank" class="btn btn-outline-success btn-sm"
+                href="https://comments-are-turned-off.onrender.com">Finished Product</a>
+            <a target="_blank" class="btn btn-outline-primary btn-sm" 
+            href="https://github.com/charleyoshi/catoFrontend">
+            Frontend Source Code </a>
+            <a target="_blank" class="btn btn-outline-primary btn-sm" 
+            href="https://github.com/charleyoshi/catoBackend">
+            Backend Source Code </a>
+            
+            <br>
+
+            <img style="border: solid; border-radius: 12px;" alt="MERN Stack Project Showcase"
+                title="MERN Stack Project Showcase" class="featured_image" src="/images/post_cato/featureImage.gif">
+            <br>
+
+
+            <span class="tag">MERN Full Stack</span>
+            <span class="tag">Redux</span>
+            <span class="tag">Axios</span>
+            <span class="tag">React hooks</span>
+            <span class="tag">Mongoose</span>
+
+            <hr>
+            <h1>MERN Stack Project Showcase</h1>
+
+            <div class="author-wrapper" style="margin-top: 20px">
+                <img alt="Charley Yoshi" title="Charley Yoshi" id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: November 30, 2023, 3:13 p.m.</small>
+                </div>
+                <a target="_blank" href="https://www.linkedin.com/in/charley-yoshi-9a7743236/">
+                    <img id="author-contact" src="/images/linkedin.png" />
+                </a>
+            </div>
+
+            <br>
+            <div class='article'>
+                <br>
+                Check out the website: <a target="_blank" href="https://comments-are-turned-off.onrender.com">comments-are-turned-off.com</a>
+                <br><br>
+
+                <h2>TL;DR</h2>
+                <p>
+                    I made this cato (comments are turned off) full-stack website, allowing users to comment on youtube
+                    videos that have their comment sections blocked.
+                    <br /><br />
+                    This article covers the backend structures, including route setup, data handling and Mongoose
+                    schema. On the frontend I used popular libraries such as Redux and Axios, and React’s `context` and
+                    custom hooks for authentication. Finally it covers several problems I faced and solved.
+                </p>
+
+                <!-- Legend -->
+                <h4>Contents</h4>
+                <ol class="legend">
+                    <!-- 1 -->
+                    <li>
+                        <a href="#Overview">
+                            Overview
+                        </a>
+                    </li>
+                    <!-- 2 -->
+                    <li>
+                        <a href="#Dividing-Frontend-and-Backend-Responsibilities">
+                            Dividing Frontend and Backend Responsibilities
+                        </a>
+                    </li>
+                    <!-- 3 -->
+                    <li>
+                        <a href="#Backend">
+                            Backend
+                        </a>
+                        <ol>
+                            <li>
+                                <a href="#Backend-Folder-Structure">
+                                    Folder Structure
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Backend-Setting-up-Routes">
+                                    Setting up Routes (API Endpoints)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Backend-Mongoose-Schema-Models-and-Structure">
+                                    Mongoose Schema, Models and Structure
+                                </a>
+                                <ul>
+                                    ✧
+                                    <a href="#Backend-Schema-Design-Considerations">
+                                        Schema Design Considerations
+                                    </a>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                    <!-- 4 -->
+                    <li>
+                        <a href="#Frontend">
+                            Frontend
+                        </a>
+                        <ol>
+                            <li>
+                                <a href="#Frontend-Folder-Structure-and-Libraries">
+                                    Folder Structure and Libraries
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Frontend-Data-Management">
+                                    Data Management
+                                </a>
+                                <ul>
+                                    ✧
+                                    <a href="#Frontend-Data-Fetching-with-Axios">
+                                        Data Fetching with Axios
+                                    </a>
+                                </ul>
+                                <ul>
+                                    ✧
+                                    <a href="#Frontend-State-Management-with-Redux">
+                                        State Management with Redux
+                                    </a>
+                                </ul>
+                                <ul>
+                                    ✧
+                                    <a href="#Frontend-Authentication-with-Custom-Hooks-useContext-and-Google-Identity">
+                                        Authentication with Custom Hooks, useContext & Google Identity
+                                    </a>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#Frontend-UI-UX-Implementation">
+                                    UI/UX Implementation
+                                </a>
+                            </li>
+                        </ol>
+                    </li>
+                    <!-- 5 -->
+                    <li>
+                        <a href="#Features">
+                            Features
+                        </a>
+                        <ol>
+                            <li>
+                                <a href="#Features-App-Logic">
+                                    App Logic
+                                </a>
+                                <ul>
+                                    ✧
+                                    <a href="#Features-The-Comment-and-Voting-Logic">
+                                        The Comment and Voting Logic (Frontend)
+                                    </a>
+                                </ul>
+                                <ul>
+                                    ✧
+                                    <a href="#Features-Determining-When-to-Make-Third-party-API-Calls">
+                                        Determining When to Make Third-party API Calls (Backend)
+                                    </a>
+                                    <ul>
+                                        ❖
+                                        <a
+                                            href="#Features-Determining-When-to-Make-Third-party-API-Calls-Google-Authentication">
+                                            Google Authentication
+                                        </a>
+                                        <br>
+                                        ❖
+                                        <a href="#Features-Determining-When-to-Make-Third-party-API-Calls-Youtube-API">
+                                            YouTube API
+                                        </a>
+                                    </ul>
+                                </ul>
+                                <ul>
+                                    ✧
+                                    <a href="#Features-Getting-Videos-from-User-Input">
+                                        Getting Videos from User Input (Backend)
+                                    </a>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#Features-Localisation">
+                                    Localisation
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Features-Error-Handling">
+                                    Error Handling
+                                </a>
+                            </li>
+                        </ol>
+                    </li>
+                    <!-- 6 -->
+                    <li>
+                        <a href="#Problems-Faced-and-Solved">
+                            Problems Faced and Solved
+                        </a>
+                    </li>
+                    <!-- 7 -->
+                    <li>
+                        <a href="#Packages-and-Libraries-Used">
+                            Packages & Libraries Used
+                        </a>
+                    </li>
+                    <!-- 8 -->
+                    <li>
+                        <a href="#Lessons-Learned">
+                            Lessons Learned
+                        </a>
+                        <ol>
+                            <li>
+                                <a href="#Lessons-Learned-Technical-Insights">
+                                    Technical Insights
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Lessons-Learned-Problem-Solving-Skills">
+                                    Problem-Solving Skills
+                                </a>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+
+                <br /><br />
+                <hr /><br />
+                <h2 id="Overview">1. Overview</h2><br>
+                <p>
+                    Welcome to the showcase of a dynamic MERN stack application crafted to tackle a common challenge:
+                    enabling discussions on YouTube videos with disabled comments.
+                    <br /><br />
+                    Named after the common frustration `comments are turned off`, cato harnesses the power of MongoDB,
+                    Express.js, React, and Node.js to create a platform where users can share their thoughts and
+                    opinions
+                    seamlessly, especially on videos where comments are blocked.
+                    <br /><br />
+                    In this article I will demonstrate my skills in full-stack development. All details will be
+                    unveiled,
+                    from a robust backend structure efficiently handling data to a user-friendly frontend ensuring a
+                    smooth
+                    experience. Let’s get started!
+                    <br /><br />
+                </p>
+
+
+                <hr><br>
+                <h2 id="Dividing-Frontend-and-Backend-Responsibilities">2. Dividing Frontend and Backend
+                    Responsibilities</h2><br>
+                <p>
+
+
+                    The division between frontend and backend was essential for a smooth development.
+                    <br /><br />
+                    The backend for my project, responsible for managing data flow and serving API endpoints, interacts
+                    with
+                    MongoDB through Mongoose schema, and of course handles requests from the frontend. Meanwhile, the
+                    frontend, built with React and libraries like Redux for state management, focuses on providing an
+                    intuitive UI and smooth user interactions.
+                    <br /><br />
+                    The collaboration between these layers is achieved through RESTful API communication. Next I will
+                    talk
+                    about them one by one.
+                    <br /><br />
+                </p>
+
+                <hr><br>
+                <h2 id="Backend">3. Backend</h2><br>
+
+                <h3 id="Backend-Folder-Structure">3.1 Folder Structure</h3>
+                <p>
+                    I structured my backend folder as below:
+                    <br /><br />
+                    <img src="/images/post_cato/backendFolderStructure.png" alt="Backend-Folder-Structure">
+                    <br />
+                    <small><i>Image: Folder strucutre</i></small>
+                    <br /><br />
+                    At its core are 4 specific paths (will be further discussed in 3.2) established in the
+                    <code>`server.js`</code>, each of them
+                    has their own router.
+                    <br /><br />
+                    Routers are defined in a folder called <code>`routes`</code>, and are supposed to store request
+                    handler functions,
+                    such as <code>get</code>, <code>post</code>, or <code>delete</code>.
+                    <br /><br />
+                    On the other hand, I have a folder called <code>`controller`</code>, which stores all the functions
+                    that are used in
+                    the request handler functions in the router files. Functions in this folder do the actual
+                    heavy-lifting
+                    job of handling and manipulating data, communicating with the database.
+                    <br /><br />
+                </p>
+
+                <h3 id="Backend-Setting-up-Routes">3.2 Setting up Routes (API Endpoints)</h3>
+                <p>
+                    As I mentioned in the previous part, there were 4 paths to handle different functionalities in such
+                    a video commenting application. They are actually <code>`videos`</code>, <code>`comments`</code>,
+                    <code>`votes`</code>, and <code>`user`</code> paths. Below is an
+                    image of how they look.
+                    <br /><br />
+                    <img src="/images/post_cato/settingUpRoutes.png" alt="Setting Up Routes"><br />
+                    <small><i>Image: The four main routes in the backend</i></small>
+                    <br /><br />
+                    The paths for <code>`videos`</code> and <code>`user`</code> are straight forward. It’s the
+                    <code>`comments`</code> and <code>`votes`</code> that are
+                    tricky. In a commenting system, a comment must point to one specific video, and a vote must point to
+                    a specific comment (or reply). That’s why a videoID (<code>:vid</code>) will be passed into the path
+                    for
+                    comments, and a commentID (<code>:cid</code>) will be passed into the path for votes.
+                    <br /><br />
+                    Below are the detailed endpoints for each path.
+                    <br />
+                <ul>
+
+                    <li>
+                        <h5>1. <code>/api/videos</code></h5>
+                        <img src="/images/post_cato/videoRoutes.png" alt="Video Routes"><br />
+                        <small><i>Image: Detailed API Endpoints for `videoRoutes`</i></small><br /><br />
+                    </li>
+                    <li>
+                        <h5>2. <code> /api/video/:vid/comments</code></h5>
+                        <img src="/images/post_cato/commentRoutes.png" alt="Comment Routes"><br />
+                        <small><i>Image: Detailed API Endpoints for `commentRoutes`</i></small><br /><br />
+                    </li>
+                    <li>
+                        <h5>3. <code>/api/comment/:cid/votes</code></h5>
+                        <img src="/images/post_cato/voteRoutes.png" alt="Vote Routes"><br />
+                        <small><i>Image: Detailed API Endpoints for `voteRoutes`</i></small><br /><br />
+                    </li>
+                    <li>
+                        <h5>4. <code>/api/user</code></h5>
+                        <img src="/images/post_cato/userRoutes.png" alt="User Routes"><br />
+                        <small><i>Image: Detailed API Endpoints for `userRoutes`</i></small><br /><br />
+                    </li>
+                </ul>
+                </p>
+
+                <h3 id="Backend-Mongoose-Schema-Models-and-Structure">3.3 Mongoose Schema, Models and Structure</h3>
+                <p>
+                    The project’s data architecture relies on four major Mongoose schemas, each designed to manage
+                    specific aspects of the data flow:
+                    <br /><br />
+                    <img src="/images/post_cato/mongooseSchema.png" alt="Mongoose Schema" /><br />
+                <ul>
+                    <li>
+                        <h5>1. <code>`videoSchema`</code></h5>
+
+                        This schema captures essential video details, including <code>videoID</code>,
+                        <code>title</code>, <code>description</code>, <code>publishedAt</code>
+                        (date of publishing), <code>author</code>, <code>thumbnail</code>, <code>duration</code>,
+                        <code>views</code>, <code>isCato</code> flag (true is comments are
+                        turned off on Youtube), <code>avatar</code>, and <code>locale</code>.
+                        <br /><br />
+                        The above data is fetched from <a href="https://developers.google.com/youtube/v3/docs"
+                            class="">Youtube API v3</a>.
+
+                    </li> <br /><br />
+                    <li>
+                        <h5>2. <code>`commentSchema`</code></h5>
+
+                        Designed to handle comments, this schema holds data such as <code>vid</code> (associated video
+                        ID), <code>text</code>
+                        (comment text), <code>parentID</code> (if it's a reply to another comment), and
+                        <code>userID</code> (identifying the user
+                        who posted the comment). Additionally, it <code>timestamps</code> each comment for tracking
+                        purposes.
+                    </li> <br /><br />
+                    <li>
+                        <h5>3. <code>`voteSchema`</code></h5>
+                        Facilitating the voting system for comments, this schema stores <code>commentID</code> (the
+                        comment being
+                        voted on), <code>userID</code> (identifying the user who cast the vote), and
+                        <code>voteType</code> (either <code>`upvote`</code> or
+                        <code>`downvote`</code>).
+                    </li><br /><br />
+                    <li>
+                        <h5>4. <code>`userSchema`</code></h5>
+                        Dedicated to managing user data, this schema includes <code>userID</code> (unique user
+                        identifier),
+                        <code>firstName</code>, <code>lastName</code>, and <code>imageURL</code> (user's profile
+                        picture).
+                    </li>
+                </ul>
+                </p>
+
+                <h3 id="Backend-Schema-Design-Considerations"><u>Schema Design Considerations</u> </h3>
+                <p>
+                    When designing the schema for comments and votes, I was deciding between two approaches.
+                    <br /><br />
+                <h5>Approach 1 - Votes array within Comments</h5>
+
+                In this approach, votes are embedded within the comment schema, with two arrays <code>`upvotes`</code>
+                and
+                <code>`downvotes`</code>. It would look like this: <br />
+                <code>
+                Comments {<span style="color: dimgrey;">  <br/>
+                    &emsp;commentID,  <br/>
+                    &emsp;videoID,    <br/>
+                    &emsp;userID,     <br/>
+                    &emsp;Text,       <br/>
+                    <strong>
+                    &emsp;upvotes:[user1, user2, …etc],   <br/>
+                    &emsp;downvotes: [user1, user2, …etc] <br/>
+                    </strong>
+                </span>}
+                </code>
+
+
+
+                <h5>Approach 2 - Separate Comment and Vote Schemas</h5>
+                Comments and votes are separated into different schemas. <br /><br />
+
+                Each of the approaches has their own pros and cons. <u>Approach 1</u> has a simpler data structure by
+                storing
+                comments as an array within the videos table, reducing the complexity of the database schema. Also, it
+                might be easier to fetch comments and vote data together in a single query. However, it might hinder
+                <b>scalability</b> and <b>flexibility</b>, especially when dealing with a large number of votes. The
+                single table with an array might become less efficient for handling a large amount of items. Indexing
+                and querying might become less performant. Also, it might lead to <b>data redundancy</b> since each
+                comment row will contain all the votes. This can increase storage requirements and complicate data
+                management.
+                <br /><br />
+                On the other hand, <u>Approach 2</u> has better data integrity, because each vote is linked to a
+                specific
+                comment through the <code>`commentID`</code>, making it easier to maintain <b>data consistency</b> and
+                perform complex
+                queries. It is also better when it comes to <b>scalability</b> and <b>flexibility</b> which is very
+                important when
+                dealing with a large volume of data. The drawback is it might require more complex database schema
+                design and query logic, which might make development and maintenance more challenging.
+                <br /><br />
+                <h5><u>Chosen Approach and Reasons</u></h5>
+                After some consideration, I decided to go for <u>Approach 2</u>, where <code>comments</code> and
+                <code>votes</code> are in separate
+                schemas, because it is better than Approach 1 in terms of <b>scalability</b>, <b>flexibility</b>
+                and <b>data integrity</b>.
+                It is also beneficial if the application is going to scale up in the long-term.
+                <br /><br />
+                </p>
+
+                <hr><br>
+                <h2 id="Frontend">4. Frontend</h2><br>
+
+                <h3 id="Frontend-Folder-Structure-and-Libraries">4.1 Folder Structure and Libraries</h3>
+                <p>
+                    For project organisation and maintainability, the frontend react files are structured within the
+                    <code>src</code>
+                    directory like the following, ensuring a clear and scalable layout: <br /><br />
+                    <img src="/images/post_cato/frontendFolderStructure.png" alt="Frontend Folder Structure" /> <br />
+                <ul>
+                    <li><code>`assets`</code>: for static images and non-code assets used across the application</li>
+                    <li><code>`components`</code>: for reusable React functional components</li>
+                    <li><code>`context`</code>: for custom context, e.g. AuthContext</li>
+                    <li><code>`hooks`</code>: for custom hooks</li>
+                    <li><code>`pages`</code>: for page-specific components, e.g. home page, 404 page, etc</li>
+                    <li><code>`reducers`</code>: for Redux reducers</li>
+                    <li><code>`utility`</code>: for utility functions and helper modules, e.g. formatting dates</li>
+                </ul>
+                Libraries Used: <br />
+                <ul>
+                    <li><b>React</b>: <br />The foundation of the frontend</li><br />
+                    <li><b>Redux</b>: <br />Centralised state management for data and actions within the application
+                        (explained in next section 4.2 Data Management)</li><br />
+                    <li><b>Custom Context</b>: <br />Handles specific needs for authentication (explained in next
+                        section 4.2 Data Management)</li><br />
+                </ul>
+                </p>
+                <h3 id="Frontend-Data-Management">4.2 Data Management</h3>
+                <p>
+                <ul>
+                    <br />
+                    <li>
+                        <h5 id="Frontend-Data-Fetching-with-Axios">1. Data Fetching with Axios</h5>
+                        To fetch data from the backend, I used <a href="https://axios-http.com/">Axios</a>, a robust
+                        HTTP client
+                        for making asynchronous requests.
+                        I chose to use Axios instead of the built-in fetch API because it is popular and widely used,
+                        supports
+                        more <b>error handling</b> capabilities, and has broader support for older browsers. Also, its
+                        built-in
+                        support
+                        for transforming data into <b>json</b> and the above reasons make it a preferred choice for
+                        backend
+                        communication. <br /> <br />
+                    </li>
+                    <li>
+                        <h5 id="Frontend-State-Management-with-Redux">2. State Management with Redux</h5>
+                        As a centralised state management tool, <a href="https://redux.js.org/"> Redux</a>’s main
+                        purpose is to
+                        manage the state efficiently at the
+                        application-level. This tool comes in handy because when users <code>post</code> new comments to
+                        the
+                        video, it
+                        ensures <b>real-time updates</b> so that the user doesn’t have to reload the page to see the
+                        newly added
+                        comment. This seamless update mechanism enhances user experience by providing a more
+                        user-friendly
+                        interaction model. <br /><br />
+                    </li>
+                    <li>
+                        <h5 id="Frontend-Authentication-with-Custom-Hooks-useContext-and-Google-Identity">3.
+                            Authentication with Custom Hooks, useContext & Google Identity</h5>
+                        When it comes to authentication, I used a custom context that helps efficiently handle user
+                        authentication across the app. I created a <b>context provider</b> to wrap and encapsulate the
+                        whole
+                        application, which can then grant access to authentication data and methods /
+                        <code>dispatch</code>
+                        functions (e.g.
+                        login and logout) throughout the component tree. <br /><br />
+
+                        To handle the actual user authentication, I used <a
+                            href="https://developers.google.com/identity">Google
+                            Identity</a> so that users can use the <code>`sign in with Google`</code> button to login to
+                        my
+                        application, instead of going through the annoying process of registering
+                        a new user from scratch. When the user successfully login to their Google account, a <b>jwt
+                            (JSON Web
+                            Token)</b> is returned by the Google API. <br /><br />
+
+                        By using this JSON web token along with implementing the custom context with <b>useContext</b>,
+                        the
+                        authentication information can be secured and accessed across different components. Users can
+                        also
+                        experience a fast, safe and familiar sign-in process.
+                        <br /><br />
+                    </li><br />
+                </ul>
+
+
+                Summarising the data management setup, I used Axios for backend communication, Redux for state
+                management enabling real-time updates, and useContext hooks (and some custom hooks such as useLogin and
+                useLogout hooks) with custom context for authentication.
+                </p>
+                <br /><br />
+                <h3 id="Frontend-UI-UX-Implementation">4.3 UI/UX Implementation</h3>
+                <p>
+                    I didn't do much of the design for the application. What I did was stick to the existing Youtube
+                    website design as closely as possible. By replicating its layout, aesthetics, and functionalities,
+                    users might find it easier to adapt and can find a seamless transition between YouTube and my
+                    application. This may make them more comfortable using my app and thus enhance the user experience.
+                    <br /> <br />
+                </p>
+
+                <hr><br>
+                <h2 id="Features">5. Features</h2><br>
+
+                <h3 id="Features-App-Logic">5.1 App Logic</h3>
+                <p>
+                    There are 3 key logics in this app that I want to talk about. First, there's the comment and voting
+                    system in the app's frontend. Then, on the backend, there are two more: determining when to use
+                    third party API calls, and finally how to handle user input on getting the corresponding
+                    <code>`videoID`</code>.
+                    Let's dive into each one to see how they work. <br /><br />
+                <ul>
+                    <li>
+                        <h5 id="Features-The-Comment-and-Voting-Logic">1. The Comment and Voting Logic (Frontend)</h5>
+                        Commenting in this app is flexible - you can comment with your identity or anonymously. If you
+                        use the
+                        <code>`sign in with Google`</code> button, your comments will display your Google account's
+                        name; otherwise, they'll
+                        appear anonymously. I designed this setup to seek balance between <b>user authorization</b> and
+                        <b>app usability</b>,
+                        recognizing that many users hesitate to sign in to new apps. <br /><br />
+                        <img style="border: salmon solid; border-radius: 12px;"
+                            src="/images/post_cato/commentAfterLoggingIn.png" alt="Comment After Logging In"><br />
+                        <small style="color: salmon ;"><i>GIF: Comment After Logging In</i></small>
+
+                        <br /><br /><br />
+                        <img style="border: royalblue solid; border-radius: 12px;"
+                            src="/images/post_cato/commentAnonymously.png" alt="Comment Anonymously"><br />
+                        <small style="color:royalblue;"><i>GIF: Comment Anonymously</i></small>
+
+                        <br /><br /><br />
+                        On the other hand, voting isn't anonymous - you need to sign in to upvote or downvote a comment.
+                        This ensures that each user can only vote once on a comment, preventing multiple votes. It also
+                        allows me to track who voted for which comment using the <code>`voteSchema`</code> in the
+                        database (as stated
+                        in the previous section <a href="#Backend-Mongoose-Schema-Models-and-Structure">3.3 Mongoose
+                            Schema, Models & Structure</a>), linking the <code>userID</code> to the
+                        <code>commentID</code> and <code>vote type</code>. This way, I can show users if they've already
+                        voted on a comment by,
+                        for example, changing its colour on the page, providing a helpful visual cue for their previous
+                        interaction. <br /><br />
+
+                        <img style="border: salmon solid; border-radius: 12px;"
+                            src="/images/post_cato/voteAfterLoggingIn.png" alt="Vote After Logging In"><br />
+                        <small style="color: salmon ;"><i>GIF: Vote After Logging In</i></small>
+
+                        <br /><br /><br />
+                        <img style="border: royalblue solid; border-radius: 12px;"
+                            src="/images/post_cato/voteAnonymously.png" alt="Vote Anonymously"><br />
+                        <small style="color:royalblue;"><i>GIF: Vote Anonymously</i></small>
+                        <br /><br /><br />
+                    </li>
+                    <li>
+                        <h5 id="Features-Determining-When-to-Make-Third-party-API-Calls">
+                            2. Determining When to Make Third-party API Calls (Backend)</h5>
+                        Determining when to trigger the third-party API calls is crucial. Not only can excessive API
+                        calls be costly, but they can also impact the app's performance. Now, let's explore the
+                        methodology I used behind the two main third-party API I used for this app - Google
+                        Authentication and the YouTube API.
+                        <br /><br />
+                        <h6 id="Features-Determining-When-to-Make-Third-party-API-Calls-Google-Authentication"><b>Google
+                                Authentication:</b></h6>
+                        <ul>
+                            <li><b>Trigger</b>: Whenever a user clicks the <code>`sign-in with Google`</code> button.
+                            </li>
+                            <li> <b>Frequency</b>: This call is made whenever needed due to its significance in ensuring
+                                the
+                                security
+                                and authentication of user access.
+                            </li>
+                        </ul>
+                        <br />
+                        <h6 id="Features-Determining-When-to-Make-Third-party-API-Calls-Youtube-API"><b>Youtube API:</b>
+                        </h6>
+                        <ul>
+                            <li><b>Trigger</b>: There are two specific occasions prompt a call to the YouTube API.
+                                <ul>
+                                    <li><b>1. VideoID Not Found</b>: When the <code>videoID</code> isn't present in the
+                                        app's database,
+                                        a call is made to retrieve the video info and store it in my database. This
+                                        prevents unnecessary calls by fetching data directly from the app's database
+                                        when available.
+                                    </li>
+                                    <li>
+                                        <b>2. Updating Existing Video Info</b>: When changes occur in the video details
+                                        stored locally (e.g., channel avatar update), a <code>patch</code> request is
+                                        sent to the
+                                        YouTube API's endpoint to update the video information.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li> <b>Handling Changes Detection</b>: Unfortunately, the existing YouTube API does not
+                                have a
+                                direct method to detect changes in video info. So far the most reasonable approach would
+                                be periodically re-fetching video info, e.g. on a weekly basis, to identify any
+                                alterations. This helps maintain an updated database and a seamless user experience.
+                            </li>
+                        </ul>
+                        <br />
+                    </li>
+                    <br />
+                    <li>
+                        <h5 id="Features-Getting-Videos-from-User-Input">3. Getting Videos from User Input (Backend)
+                        </h5>
+                        There are two methods I can get the <code>videoID</code> from users: <br />
+                        <b>Direct Input Field</b>: Providing users with an input field to paste the YouTube link, a
+                        common and
+                        straightforward method used on many websites for video conversion. <br />
+                        <b>Custom URL Transformation</b>: An alternative way by allowing users to replace
+                        <code>`youtube`</code> in the URL
+                        with <code>`my-app-name`</code>, enabling them to access the video via my app's domain. <br />
+                        <br />
+                        <u><b>Addressing Various YouTube Link Formats:</b></u> <br />
+                        YouTube links can vary, including regular video URLs (like this:
+                        <code>youtube.com/watch?v=0123456</code> ),
+                        shorts (like this: <code>youtube.com/shorts/0123456</code>), or videos within playlists (like
+                        this:
+                        <code>youtube.com/watch?v=0123456&list=8765432</code>). See more <a
+                            href="https://gist.github.com/rodrigoborgesdeoliveira/987683cfbfcc8d800192da1e73adc486">
+                            Active Youtube URL Formats</a>.
+                        To ensure users can access the video they are looking for regardless of the link format, my
+                        backend logic employs several techniques such as <b>regular expressions</b> (regex) and parsing
+                        query
+                        parameters (e.g., useSearchParams hook) along with case handling methods to extract the
+                        <code>videoID</code>
+                        from the URL, so my app can recognize and process different YouTube link formats.
+                    </li>
+                </ul>
+                <br />
+                </p>
+                <h3 id="Features-Localisation">5.2 Localisation</h3>
+                <p>
+                <h6><b>Locale-Based Recommendations:</b></h6>
+                I wanted the sidebar to provide recommended videos based on the user's locale. Initially, the plan was
+                to scrape videos from various locales via the Youtube API to offer locale-specific recommendations.
+                However, due to API limitations (that there’s no specific filter for comment-disabled videos), this
+                method
+                was <b>expensive</b> and <b>inefficient</b>. <br /><br />
+                <h6><b>Adopting a Database-Based Approach:</b></h6>
+                Instead, I had this workaround: adding a <code>`locale`</code> field to the video model (as detailed in
+                section <a href="#Backend-Mongoose-Schema-Models-and-Structure">3.3 Mongoose Schema Models and
+                    Structure</a>).
+                User locale information is obtained through JavaScript's <code>`navigator.language`</code> property.
+                Videos are then fetched from the database based on these locales.<br /><br />
+                <h6><b>Leveraging User Contributions:</b></h6>
+                The videos in the database originate from users who searched for and commented on them. These existing
+                user-generated entries serve as the basis for recommendations, so it is more likely that users find them
+                relevant. <br /><br /><br />
+                This way I can transfer the recommendation workload to users, leveraging their preferences and saving
+                backend resources from the task of sourcing videos. <br /> <br />
+                </p>
+
+                <h3 id="Features-Error-Handling">5.3 Error Handling</h3>
+                <p>
+                <h6><b>Handling Intentional Errors:</b></h6>
+                In my project, some backend responses like 404 are intentional behaviours, not actual errors.
+                The most common example is when handling requests for anonymous users. <br /><br />
+                <h6><b>Graceful Error Handling Approach:</b></h6>
+                To manage these intentional errors more gracefully, I adjusted the backend to respond differently.
+                Instead of a 404 'Not Found' status, the response now signifies the status of an anonymous user, using a
+                <code>`204 No Content`</code> status code. This change ensures a more user-friendly approach by
+                explicitly stating
+                the absence of specific data for the anonymous user. <br /><br />
+                </p>
+                <hr><br>
+                <h2 id="Problems-Faced-and-Solved">6. Problems Faced and Solved</h2><br>
+                <p>
+                    I encountered key challenges, previously discussed in various sections. Here, I'll summarise these
+                    hurdles. I'll also highlight how I resolved these problems to ensure the app's success.
+                <h5><b>Challenges:</b></h5>
+                <b>Central Data Store Management:</b> <br />
+                Handling all application data in a centralised manner posed a challenge initially. <br /><br />
+                <b>Third-Party API Call Frequency:</b><br />
+                Managing and limiting the frequency of third-party API calls was a performance concern. <br /><br />
+                <b>Database Schema Design:</b><br />
+                Designing scalable and flexible database schemas presented challenges in determining the most efficient
+                structure. <br /><br /><br />
+
+                <h5><b>Solutions:</b></h5>
+                <b>Redux for Centralised Data:</b> <br />
+                Utilised Redux as a solution (as mentioned in <a href="#Frontend-State-Management-with-Redux">4.2 Data
+                    Management - State Management with Redux</a>) to manage and maintain a central data
+                store for certain application data.<br /><br />
+                <b>Controlled API Call Frequency:</b> <br />
+                Developed some strategies (as mentioned in <a
+                    href="#Features-Determining-When-to-Make-Third-party-API-Calls">5.1 App Logic - Features Determining
+                    When to Make Third party API Calls</a>) to control and limit the frequency of
+                third-party API calls, enhancing app performance.<br /><br />
+
+                <b>Optimised Database Schema:</b> <br />
+                Addressed challenges by carefully designing database schemas (as mentioned in <a
+                    href="#Backend-Schema-Design-Considerations">3.3 Mongoose Schema,
+                    Models & Structure - Design Consideration</a>) to create a scalable and flexible structure for
+                improved
+                efficiency.<br /><br />
+
+                </p>
+                <hr><br>
+                <h2 id="Packages-and-Libraries-Used">7. Packages & Libraries Used</h2><br>
+                <p>
+                <h5><b>MERN Stack:</b></h5>
+                Employed the MERN (MongoDB, Express.js, React, Node.js) stack for comprehensive full-stack development.
+                <br /><br />
+                <h5><b>Mongoose:</b></h5>
+                For MongoDB object modelling, facilitating efficient schema creation and data handling.<br /><br />
+                <h5><b>Redux:</b></h5>
+                For effective state management across the application, ensuring a centralised data store. <br /><br />
+                <h5><b>Axios</b></h5>
+                For handling HTTP requests and managing data transfer between the frontend and backend.<br /><br />
+                <h5><b>Emoji-Mart:</b></h5>
+                A library offering an emoji keyboard for enhanced user interaction and experience.<br /><br />
+                
+                <img style="border: solid;" src="/images/post_cato/emoji-mart.png" alt="emoji-mart"><br/>
+                <small><i>GIF: Emoji keyboard</i></small><br /><br /><br />
+
+                <h5>Libraries for Improved User Experience:</h5><br />
+                <h5><b> <a href="https://date-fns.org/">Date-fns:</a></b> </h5>
+                Transform date formats, converting timestamps to human-readable formats (e.g. from
+                <code>`2023-10-10`</code> to <code>`3 months ago`</code>).<br /><br />
+                <img src="/images/post_cato/date-fns.png" alt="Date-fns"><br/>
+                <small><i>GIF: The change of format of views and date</i></small><br /><br /><br />
+
+
+                <h5><b><a href="https://www.npmjs.com/package/react-string-replace">React-String-Replace:</a></b></h5>
+                Convert plain text into timestamp format (e.g. from <code>`00:00`</code> to
+                clickable <code>`&lt;a&gt;00:00&lt;\a&gt;`</code>) for enhanced user experience.<br /><br />
+                <img src="/images/post_cato/react-string-replace.png" alt="react-string-replace"><br/>
+                <small><i>GIF: Convert plain text into timestamp format</i></small><br /><br /><br />
+
+                <h5><b><a href="https://www.npmjs.com/package/react-linkify">Linkify</a></b></h5>
+                Convert plain text into hyperlinks, enriching the displayed content with clickable links for improved
+                usability.<br /><br />
+                <img src="/images/post_cato/linkify.png" alt="linkify"><br/>
+                <small><i>GIF: Convert plain text into hyperlinks</i></small><br /><br /><br />
+
+
+
+                <h5><b><a href="https://www.npmjs.com/package/react-player">React-Player</a></b></h5>
+                Implemented React-Player instead of iframes because it supports starting videos at specific seconds when
+                clicking on timestamps (e.g. <code>`01:20`</code>), enhancing user control and experience.<br /><br />
+
+
+
+
+
+
+
+
+                </p>
+                <hr><br>
+                <h2 id="Lessons-Learned">8. Lessons Learned</h2><br>
+                <ul>
+                    <li>
+                        <h3 id="Lessons-Learned-Technical-Insights">8.1 Technical Insights</h3><br />
+                        <p>
+                            <b>Handling Global Context:</b> <br />
+                            Learned to keep the user interface in sync with the database by managing the global context
+                            in the
+                            frontend.<br /><br />
+                            <b>Dispatch & Payload Understanding:</b> <br />
+                            Figured out how to use hooks for easy login and authentication by understanding dispatch and
+                            payload
+                            concepts.<br /><br />
+                            <b>Enhanced Package Utilisation:</b> <br />
+                            Got better at utilising packages (such as using <a href="https://date-fns.org">Date-fns</a>
+                            to
+                            improve user experience).<br /><br />
+                        </p>
+                    </li>
+                    <li>
+                        <h3 id="Lessons-Learned-Problem-Solving-Skills">8.2 Problem-Solving Skills</h3> <br />
+                        <p>
+                            <b>Adaptive Problem Solving:</b> <br />
+                            Became more flexible in solving challenges like managing API calls, user authentication, and
+                            data
+                            presentation.<br /><br />
+                            <b>Project Scope Management:</b> <br />
+                            Realised the importance of scalable database structures for future application growth and
+                            easier
+                            maintenance.<br /><br />
+                        </p>
+                    </li>
+                </ul>
+
+
+
+                <p>
+                    These lessons have not only enhanced my technical proficiency but also improved my problem-solving
+                    skills and project management skills. I gained a better grasp of how development works and the
+                    importance of always learning. <br/><br/>
+                </p>
+                <hr><br>
+                <br>
+            </div>
+
+
+            <p><i>You've just finished reading: MERN Stack Project Showcase</i></p>
+            <p>
+                <img style="border: solid; border-radius: 12px;" alt="MERN Stack Project Showcase"
+                    title="MERN Stack Project Showcase" class="featured_image" src="/images/thumb_cato.png">
+
+
+            </p>
+
+            <p>&nbsp;</p>
+
+            <div class="author-wrapper" style="margin-bottom: 50px">
+                <img id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: November 30, 2023, 3:13 p.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleyoshi">
+                    <img id="author-contact" src="/images/github.png" />
+                </a>
+            </div>
+        </div>
+
+        <div class="right-sidebar-wrapper">
+
+            <h4 style="text-align: center;">More projects</h4>
+            <hr>
+            <div class='sidebar-inner'>
+
+                <div class="sidebar-item">
+                    <a target="_blank" href="nerdle.html">
+                        <img src="/images/thumb_nerdle.png">
+
+
+                        <div class="sidebar-item-body">
+                            <strong>Generate math equations to play NERDLE</strong>
+                            <p>Bake a dataset for the viral math game!</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="sidebar-item">
+                    <a target="_blank" href="/post_maze.html">
+                        <img src="/images/thumb0.png">
+
+
+                        <div class="sidebar-item-body">
+                            <strong>Single-Agent Search</strong>
+
+                            <p>How does AI solve a maze?</p>
+                        </div>
+                    </a>
+                </div>
+                <div>
+                    <a href="#">Back to Top </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
