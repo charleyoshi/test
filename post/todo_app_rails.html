@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TodoApp with Rails</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/post.css">
+
+</head>
+
+<body>
+    <div>
+        <nav>
+            <ul class="topnav">
+                <li><a href="/index.html">Home</a></li>
+                <li class="topnav-right"><a href="/index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="post-container">
+
+        <div class="post-content-wrapper">
+            <br>
+            <a target="_blank" class="btn btn-outline-success btn-sm"
+                href="https://github.com/charleyoshi/todo_app_ruby_on_rails">View on Github</a>
+            <br>
+
+            <img style="border: solid; border-radius: 12px;" alt="To-do App Project Showcase"
+                title="To-do App Project Showcase" class="featured_image"
+                src="/images/post_todo_rails/featureImage.gif">
+            <br>
+
+
+            <span class="tag">Ruby</span>
+            <span class="tag">Rails</span>
+            <span class="tag">MVC Architecture</span>
+            <span class="tag">ActiveRecord</span>
+            <span class="tag">RESTful Routing</span>
+
+            <hr>
+            <h1>To-do App Project Showcase </h1>
+
+
+            <div class="author-wrapper" style="margin-top: 20px">
+                <img alt="Charley Yoshi" title="Charley Yoshi" id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: January 24, 2024, 8:07 a.m.</small>
+                </div>
+                <a target="_blank" href="https://www.linkedin.com/in/charley-yoshi-9a7743236/">
+                    <img id="author-contact" src="/images/linkedin.png" />
+                </a>
+            </div>
+
+            <br>
+            <div class='article'>
+                <br>
+
+                <p>
+                    I built a simple Todo app using <a target="_blank" href="https://rubyonrails.org/">Ruby on
+                        Rails</a>.
+                    The main goals were to grasp basic Rails concepts,
+                    <u> handle CRUD operations</u> (Create, Read, Update, Delete),
+                    and make use of the <u>MVC architecture</u>, <u>ActiveRecord</u>, and <u>RESTful routing</u>.
+                    <br />
+                    <br />
+                    This blog post breaks down the project, highlighting how these elements work together to create an
+                    effective and easy-to-use Todo application.
+                </p>
+
+                <!-- Legend -->
+                <h4>Contents</h4>
+                <ol class="legend">
+                    <!-- 1 -->
+                    <li>
+                        <a href="#Why-I-Chose-Ruby-on-Rails">
+                            Why I chose Ruby on Rails
+                        </a>
+                    </li>
+                    <!-- 2 -->
+                    <li>
+                        <a href="#The-Model-View-Controller-(MVC)-Architecture">
+                            The Model-View-Controller (MVC) Architecture
+                        </a>
+                        <ol>
+                            <li>
+                                <a href="#MVC-Architecture-Model">
+                                    Model
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#MVC-Architecture-View">
+                                    View
+                                </a>
+                                <ul>
+                                    ✧
+                                    <a href="#MVC-Architecture-View-render-vs-redirect_to">
+                                        <code>`render`</code> vs <code>`redirect_to`</code>
+                                    </a>
+                                </ul>
+                                <ul>
+                                    ✧
+                                    <a href="#MVC-Architecture-View-Partials">
+                                        Partials
+                                    </a>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#MVC-Architecture-Controller">
+                                    Controller
+                                </a>
+                            </li>
+                        </ol>
+                    </li>
+                    <!-- 3 -->
+                    <li>
+                        <a href="#RESTful-Routing">
+                            RESTful Routing
+                        </a>
+                        <ul>
+                            ✧
+                            <a href="#RESTful-Routing-Integration-with-Controllers">
+                                Integration with Controllers
+                            </a>
+                        </ul>
+                    </li>
+                    <!-- 4 -->
+                    <li>
+                        <a href="#Challenges-Faced-and-Lessons-Learned">
+                            Challenges Faced and Lessons Learned
+                        </a>
+                    </li>
+                    <!-- 5 -->
+                    <li>
+                        <a href="#Conclusion">
+                            Conclusion
+                        </a>
+                    </li>
+                </ol>
+
+                <br /><br />
+                <hr /><br />
+                <h2 id="Why-I-Chose-Ruby-on-Rails">1. Why I chose Ruby on Rails</h2><br>
+                <p>
+                    I chose Ruby on Rails for these reasons:
+                </p>
+                <ol>
+                    <li style="display: list-item;">
+                        <strong>Powerful Framework:</strong> Ruby on Rails is a powerful and versatile web development
+                        framework, and is known for its productivity and community support. Major platforms like <a
+                            target="_blank" href="https://github.com">GitHub</a>
+                        and <a target="_blank" href="https://www.airbnb.com">Airbnb</a> are built on it.
+                    </li><br>
+                    <li style="display: list-item;">
+                        <strong>Skill Expansion:</strong> After working with <a target="_blank"
+                            href="https://flask.palletsprojects.com/en/3.0.x/">Flask</a> and MERN stack,
+                        I wanted to expand my skills by diving into a new language and framework.
+                    </li><br>
+                    <li style="display: list-item;">
+                        <strong>Learning from Experience:</strong> Revisiting an old Node.js project (<a target="_blank"
+                            href="https://github.com/charleyoshi/ToDoListWebApp">link</a> to the old repo), I aimed to
+                        transform a basic todo list into a whole-stack Rails app, so that I can showcase my growth in my
+                        development path.
+                    </li><br>
+                </ol>
+
+
+                <hr><br>
+                <h2 id="The-Model-View-Controller-(MVC)-Architecture">2. The Model-View-Controller (MVC) Architecture
+                </h2><br>
+                <p>
+                    The backbone of my Todo app lies in the Model-View-Controller (MVC) architecture, a design pattern
+                    that is important for developing scalable, efficient and maintainable web applications.
+                    <br /><br />
+                </p>
+                <h3 id="MVC-Architecture-Model"><u>Model</u></h3>
+                <p>
+                    Rails uses <a target="_blank"
+                        href="https://guides.rubyonrails.org/active_record_basics.html">ActiveRecord</a>, an ORM
+                    (<a target="_blank" href="https://www.baeldung.com/cs/object-relational-mapping">Object-Relational
+                        Mapping</a>) system to integrate with the Model,
+                    providing an intuitive way to interact with the database. For this app I used two models - the
+                    <code>`Todo`</code> model and the <code>`Item`</code> model.
+                    <br /><br />
+
+                    <strong>1. Todo Model (Category):</strong> <br>
+                    The <code>`Todo`</code> model represents our categories and defines the relationship with the
+                    <code>`Item`</code> model,
+                    establishing a <u>one-to-many association</u>. This association allows a single category to have
+                    multiple
+                    tasks. For example, a <code>`todo`</code> record can be <code>`Grocery`</code>. Under
+                    <code>`Grocery`</code> there can be multiple items,
+                    like <code>`beef`</code>, <code>`onion`</code>, etc.
+                </p>
+                <p>Here's what the `Todo` model looks like:</p>
+                <img src="/images/post_todo_rails/MVC_model_todo.png" alt="MVC - todo model"><br />
+                <small><i>Image: `models/todo.rb`</i></small><br>
+                <p>The <code>`has_many :items`</code> association establishes a connection between the
+                    <code>`Todo`</code> and <code>`Item`</code> models, and
+                    the <code>`dependent: :destroy`</code> option ensures that when a category is deleted, all
+                    associated tasks (items) are also destroyed. <br><br>
+                    Below is an example:
+                </p>
+                <img src="/images/post_todo_rails/demo_delete_whole_python_todo.gif" alt="Demo - delete whole python todo"><br />
+                <small><i>GIF: When Study Python is deleted, all items inside are also deleted.</i></small><br>                
+
+                <br>
+                <p>
+                    <strong>2. Item Model (Task):</strong> <br>
+                    The <code>`Item`</code> model represents individual tasks and belongs to a category
+                    (<code>`Todo`</code>).
+                    It also includes a <code>`before_save`</code> callback to set a default value for the
+                    <code>`done`</code> attribute.
+                </p>
+                <p>Here's what the `Item` model looks like:</p>
+                <img src="/images/post_todo_rails/MVC_model_item.png" alt="MVC - todo model"><br />
+                <small><i>Image: `models/item.rb`</i></small><br>
+                <p>The <code>`belongs_to :todo`</code> association establishes the connection between the
+                    <code>`Item`</code> and <code>`Todo`</code> models, indicating that each task belongs to a specific
+                    category.
+                </p>
+
+                <br>
+                <h3 id="MVC-Architecture-View"><u>View</u></h3>
+                <p>Responsible for presenting the data to the users and capturing their interactions,
+                    views are implemented using HTML and embedded Ruby (<a target="_blank"
+                        href="https://docs.ruby-lang.org/en/3.2/ERB.html">ERB</a>) templates. These templates
+                    dynamically render the data from the controller and provide a user-friendly interface for my Todo
+                    app. </p>
+
+                <br>
+                <h4 id="MVC-Architecture-View-render-vs-redirect_to">
+                    `render` vs `redirect_to`
+                </h4>
+
+                <p>When it comes to rendering views and managing user interactions,
+                    Rails provides two key methods: <code>`render`</code> and <code>`redirect_to`</code>.
+                    <br>
+                    <br>
+
+                    I used the <code>`render`</code> method to dynamically generate HTML content based on the ERB
+                    templates. This
+                    allowed me to present data from the controller to the user without a full page reload. For instance,
+                    when a form failed to be saved, you want to update the error message but don’t want to lose all the
+                    fields the user has already typed in:
+                </p>
+                <img src="/images/post_todo_rails/demo_form_fail_to_save.gif" alt="MVC - render view demo"><br />
+                <small><i>GIF:  When a form is failed to saved, the existing form input (i.e. description) is not erased. </i></small><br>
+                <br>
+                <p>
+                    On the other hand, the <code>`redirect_to`</code> method is useful in managing user navigation and
+                    handling actions such as creating, updating, or deleting tasks. For example, after creating a new
+                    category:
+                </p>
+                <img src="/images/post_todo_rails/demo_redirect.gif" alt="MVC - redirect view demo"><br />
+                <small><i>GIF: The page is redirected to show the todo page we just created.</i></small><br>
+                <br>
+                <p>It’s important to know the difference because <code>`render`</code> will pass to the view the same
+                    parameters but <code>`redirect_to`</code> will send a completely new request to the browser.</p>
+
+                <br>
+                <h4 id="MVC-Architecture-View-Partials">
+                    Partials
+                </h4>
+                <p>For a more maintainable and <strong>DRY</strong> (Don't Repeat Yourself) codebase, I embraced the use
+                    of <a target="_blank"
+                        href="https://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partials</a> in
+                    our views.
+                    Partials are reusable snippets of ERB templates that can be included in other views.
+                    For instance, I created a <code>`_form.html.erb`</code> partial for both the <code>`Todo`</code> and
+                    <code>`Item`</code> views to render their respective forms.
+                </p>
+
+                <p>Here's a snippet of the `Item` form partial:</p>
+                <img src="/images/post_todo_rails/MVC_view_partials.png" alt="View - Partials"><br />
+                <small><i>Image: Partials - rendering a particular piece of a response to its own file.</i></small><br>
+                <br>
+                <p>Utilizing partials not only simplified the view files but also promoted consistency and reusability
+                    across different parts of the application.</p>
+
+
+                <br>
+                <h3 id="MVC-Architecture-Controller"><u>Controller</u></h3>
+                <p>Responsible for handling user requests, Controllers are stored in the <code>`app/controllers`</code>
+                    directory.
+                    Acting as an intermediary between the <strong>Model</strong> and <strong>View</strong>, controllers
+                    handle user input, processes it,
+                    and updates the Model accordingly. My <code>`TodosController`</code> and
+                    <code>`ItemsController`</code> manage <strong>CRUD operations</strong>
+                    for Todo items, ensuring the seamless flow of data between the Model and View.
+                    <br> <br>
+                    For instance, when a user adds a new task or marks one as complete, the Controller manages these
+                    actions, ensuring that the Model and View remain synchronized.
+                    <br><br>
+                    Todo Controller:
+                </p>
+
+                <img src="/images/post_todo_rails/MVC_controller_todo.png" alt="Controller - Todo"><br />
+                <small><i>Image: Todo Controller</i></small><br>
+                <br>
+                <p>In the <code>`TodosController`</code>, I handle actions such as displaying all categories
+                    (<code>`index`</code>),
+                    showing a specific category (<code>`show`</code>), creating a new category (<code>`new`</code> and
+                    <code>`create`</code>), editing an existing category (<code>`edit`</code> and
+                    <code>`update`</code>), and deleting a category (<code>`destroy`</code>). Each action corresponds to
+                    a specific view, and the controller ensures that the correct view is rendered or redirected based on
+                    the user's interactions.
+                    <br><br>
+                    Item Controller:
+                </p>
+
+                <img src="/images/post_todo_rails/MVC_controller_item.png" alt="Controller - Item"><br />
+                <small><i>Image: Item Controller</i></small><br>
+                <br>
+                <p>In the <code>`ItemsController`</code>, I handle actions for creating (<code>`create`</code>),
+                    updating (<code>`update`</code>), and deleting
+                    (<code>`destroy`</code>) tasks. The <code>`create`</code> action redirects to the associated
+                    category's show page after
+                    creating a task, and the <code>`update`</code> and <code>`destroy`</code> actions also redirect to
+                    the category's show page
+                    after completing their respective operations.
+                    <br><br>
+                </p>
+                <br>
+                <p>The MVC architecture not only enhanced the structure of the Todo app but also contributed
+                    significantly to its <strong>maintainability</strong>, <strong>scalability</strong>, and overall
+                    development <strong>efficiency</strong>.
+                    <br><br>
+                </p>
+
+                <hr><br>
+                <h2 id="RESTful-Routing">3. RESTful Routing</h2><br>
+                <p>RESTful routing is an important concept in Ruby on Rails that defines the way web applications handle
+                    <strong>HTTP requests</strong>. In Ruby on Rails, RESTful routing is built around the idea of
+                    treating each component
+                    of a web application as a <strong>resource</strong>, represented by a specific <strong>URL
+                        path</strong>. These resources are
+                    manipulated using standard HTTP methods, such as <code>`GET`</code>, <code>`POST`</code>,
+                    <code>`PUT`</code>/<code>`PATCH`</code> , and <code>`DELETE`</code>, which correspond
+                    to <strong>CRUD</strong> (Create, Read, Update, Delete) operations. This approach provides a uniform
+                    and clear
+                    process of designing and maintaining web applications.
+                    <br><br>
+                    Let's delve into the <code>`config/routes.rb`</code> file of my Todo app.
+                </p>
+                <img src="/images/post_todo_rails/routing_routes.png" alt="RESTful routing - routes"><br />
+                <small><i>Image: `config/routes.rb` file</i></small><br>
+                <br>
+                <ul>
+                    <li style="display: list-item;">
+                        The default landing page is the root route (<code>`/`</code>) that points to the
+                        <code>`index`</code> action of the <code>`TodosController`</code>, displaying a list of all todo
+                        categories.
+                    </li><br>
+                    <li style="display: list-item;">The custom route (<code>`/about`</code>) is mapped to the
+                        <code>`/about`</code> action of the <code>`ApplicationController`</code>, providing a dedicated
+                        page for information about your application.</li><br>
+                    <li style="display: list-item;"><code>`resources :todos`</code> generates RESTful routes for the
+                        <code>`Todo`</code> resource, automatically creating routes for the actions
+                        <code>`index`</code>, <code>`new`</code>, <code>`create`</code>, <code>`edit`</code>,
+                        <code>`update`</code>, <code>`show`</code>, and <code>`destroy`</code>.</li><br>
+                    <li style="display: list-item;">Additionally, by <strong>nesting</strong>
+                        <code>`resources :items`</code> within <code>`resources :todos`</code>, they established a
+                        <strong>hierarchical relationship</strong>, allowing the routes to relate the
+                        <code>`items`</code> within a specific <code>`todo`</code>.</li>
+                </ul>
+                <br>
+                <h4 id="RESTful-Routing-Integration-with-Controllers"><u>Integration with Controllers</u></h4>
+                <p>
+                    Each route defined in <code>`config/routes.rb`</code> corresponds to an action in a controller. For example, when a user accesses the root URL (/), the <code>`index`</code> action of the <code>`TodosController`</code> is triggered. Similarly, when they visit <code>`/todos/new`</code>, the <code>`new`</code> action is called, allowing for the creation of new todo items.
+                    <br><br>
+                    Let's take a closer look at the relationship between the routes and the controller actions:
+                </p>
+                <ul>
+                    <li style="display: list-item;"><strong><code>`GET /todos`</code></strong> maps to <strong><code>`TodosController#index`</code></strong> : Displays a list of all todo items.</li>
+                    <li style="display: list-item;"><strong><code>`GET /todos/:id`</code></strong> maps to <strong><code>`TodosController#show`</code></strong>: Displays details of a specific category and all items created under it.</li>
+                </ul>
+                <!-- show christmas gif -->
+                <img src="/images/post_todo_rails/demo_show_christmas.gif" alt="RESTful routing - show christmas"><br />
+                <small><i>GIF: `GET /todos` and `GET /todos/:id` </i></small><br>
+                <br><br>
+                <p>And for nested resources:</p>
+                <ul>
+                    <li style="display: list-item;"><strong><code>`POST /todos/:todo_id/items`</code></strong> maps to <strong><code>`ItemsController#create`</code></strong>: Add a new item under a specific todo category.</li>
+                    <li style="display: list-item;"><strong><code>`PATCH /todos/:todo_id/items/:id`</code></strong> maps to <strong><code>`ItemsController#update`</code></strong>: Update an item’s status to be done or undone.</li>
+                </ul>
+                <img src="/images/post_todo_rails/demo_add_item_to_python.gif" alt="RESTful routing - Add item to python"><br />
+                <small><i>GIF: `POST /todos/:todo_id/items`: Create item <strong>Dictionary</strong> under todo category <strong>Study Python</strong> </i></small><br>
+                <br>
+
+                <img src="/images/post_todo_rails/demo_update_item_status.gif" alt="RESTful routing - Update item update"><br />
+                <small><i>GIF: `PATCH /todos/:todo_id/items/:id`: Toggle item status between done and undone </i></small><br>
+                <br>
+
+
+                <hr><br>
+                <h2 id="Challenges-Faced-and-Lessons-Learned">4. Challenges-Faced-and-Lessons-Learned</h2><br>
+                <p>In all honesty, developing a Todo app might seem like a straightforward project, and I didn't
+                    encounter major obstacles. Most of the concepts, such as routing and MVC, were already familiar to
+                    me from previous frameworks I've worked with, like MERN stack applications.
+                    <br><br>
+                    However, if I were to highlight a challenge, it would be my first experience to the Ruby language
+                    itself. As this was my first non-trivial application in Ruby, I invested some time learning the
+                    language before even delving into Rails. This included mastering the <strong>basics</strong>,
+                    understanding
+                    <strong>object-oriented programming</strong> (OOP) concepts, and gaining proficiency in <strong>file
+                        handling and
+                        serialization</strong> in Ruby. I even practiced those concepts in ruby through projects like <a
+                        target="_blank" href="https://github.com/charleyoshi/mastermind_game">Mastermind</a>, <a
+                        href="https://github.com/charleyoshi/rubyPracticeOOP" target="_blank">Tic-Tac-Toe</a>,
+                    and <a target="_blank" href="https://github.com/charleyoshi/hangman_ruby">Hangman</a> (links are the
+                    github repos to them). As a result, completing this Todo app project significantly enhanced my
+                    familiarity and comfort with the Ruby language.
+                    <br><br>
+
+                    The second noteworthy challenge was adapting to the Rails framework and its principle of
+                    <strong>`convention
+                        over configuration`</strong>. Learning to use Rails was a bit tricky. I had to spend a good
+                    amount of time
+                    reading the <strong>guides</strong> and <strong>documentation</strong> to understand how things
+                    work. Even though it took some effort,
+                    what I learned turned out to be super useful and a great investment. It has become the building
+                    blocks for me in being a proficient and confident developer in Rails.
+                    <br><br>
+                </p>
+                <hr><br>
+                <h2 id="Conclusion">5. Conclusion</h2><br>
+
+                <p>
+                    In this post, we have explored the key Rails concepts within my Todo app project, including the
+                    <u>MVC architecture</u>, <u>ActiveRecord</u>, and <u>RESTful routing</u>.
+                    <br><br>
+                    These concepts are important in building robust and scalable web applications because they provide a
+                    structured way to organize code, interact with databases coherently, and define logical and
+                    user-friendly routes. As I look forward to future projects, I am excited about the continued
+                    learning and expanding my skills in the world of Ruby on Rails.
+                    <br /><br />
+                </p>
+                <hr><br>
+                <br>
+            </div>
+
+
+            <p><i>You've just finished reading: To-do App Project Showcase</i></p>
+            <p>
+                <img style="border: solid; border-radius: 12px;" alt="To-do App Project Showcase"
+                    title="To-do App Project Showcase" class="featured_image" src="/images/thumb_todo_rails.png">
+
+
+            </p>
+
+            <p>&nbsp;</p>
+
+            <div class="author-wrapper" style="margin-bottom: 50px">
+                <img id="author-thumbnail" src="/images/bubbles.jpeg" />
+                <div>
+                    <p style="margin:0">Charley Yoshi</p>
+                    <small>Posted: January 24, 2024, 8:07 a.m.</small>
+                </div>
+                <a target="_blank" href="https://github.com/charleyoshi">
+                    <img id="author-contact" src="/images/github.png" />
+                </a>
+            </div>
+        </div>
+
+        <div class="right-sidebar-wrapper">
+
+            <h4 style="text-align: center;">More projects</h4>
+            <hr>
+            <div class='sidebar-inner'>
+
+                <div class="sidebar-item">
+                    <a target="_blank" href="cato.html">
+                        <img src="/images/thumb_cato.png">
+
+
+                        <div class="sidebar-item-body">
+                            <strong>Comments are Turned off? Turn it back on!</strong>
+                            <p>Authentic MERN stack Application</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="sidebar-item">
+                    <a target="_blank" href="/post_maze.html">
+                        <img src="/images/thumb0.png">
+
+
+                        <div class="sidebar-item-body">
+                            <strong>Single-Agent Search</strong>
+
+                            <p>How does AI solve a maze?</p>
+                        </div>
+                    </a>
+                </div>
+                <div>
+                    <a href="#">Back to Top </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
